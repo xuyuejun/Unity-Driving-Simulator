@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-internal enum playerType
+internal enum InputType
 {
 	keyboard,
 	controller
@@ -10,42 +10,19 @@ internal enum playerType
 
 public class InputManager : MonoBehaviour
 {
-	[SerializeField]private playerType _playerType;
+	[SerializeField]private InputType inputType;
 
-
-	public float Horizontal { get; set; }
-
-	public float forward{ get; set; }
-
-	public float backward{ get; set; }
-
-	void Start ()
-	{
-		
-	}
-
-
+	public float Horizontal;
+	public float Torque;
+	public bool brake;
 	void Update ()
 	{
-		if (_playerType == playerType.keyboard) {
+		if (inputType == InputType.keyboard) {
 			Horizontal = Input.GetAxis ("Horizontal");
-			forward = (Input.GetAxis ("Vertical") > 0) ? Input.GetAxis ("Vertical") : 0;
-			backward = (Input.GetAxis ("Vertical") < 0) ? Input.GetAxis ("Vertical") : 0;
-		} else if (_playerType == playerType.controller) {
-			// do nothing.
+			Torque = Input.GetAxis("Vertical");
+			brake = Input.GetKey(KeyCode.X);
 		} else {
-			// do nothing.
-			// AI script provides input.
+			// do nothing
 		}
-	}
-
-	public int ReturnPlayerType ()
-	{
-		if (_playerType == playerType.keyboard)
-			return 2;
-		else if (_playerType == playerType.controller)
-			return 1;
-		else
-			return 0;
 	}
 }
