@@ -3782,9 +3782,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c08f1affc4717e643a238c0511b6ce4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topSpeed: 330
-  accleration: 0
-  boostForce: 1000
+  maxAngle: 30
+  maxTorque: 300
+  brakeTorque: 30000
   wheelMesh:
   - {fileID: 333788912}
   - {fileID: 624245736}
@@ -3795,9 +3795,13 @@ MonoBehaviour:
   - {fileID: 1897296172930635508}
   - {fileID: 987759139020171022}
   - {fileID: 2647915196788896664}
+  criticalSpeed: 5
+  stepsBelow: 5
+  stepsAbove: 1
   fwdInput: 0
   backInput: 0
   horizontalInput: 0
+  driveType: 1
 --- !u!114 &7582304808195227975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3810,7 +3814,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd5d3828f19cf0b4b8e1c31c5aaddceb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerType: 0
+  inputType: 0
+  Horizontal: 0
+  Torque: 0
+  brake: 0
 --- !u!1 &7605909804883333384
 GameObject:
   m_ObjectHideFlags: 0
