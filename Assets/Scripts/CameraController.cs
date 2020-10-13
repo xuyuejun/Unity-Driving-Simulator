@@ -9,7 +9,7 @@ public class CameraController : MonoBehaviour
     public Transform FirstPersonTarget;
     public Transform ThirdPersonTarget;
     public Transform lookAtTarget;
-    bool m_SHowingFirstPersonView;
+    public bool m_SHowingFirstPersonView;
     void FixedUpdate()
     {
         UpdateCamera ();
