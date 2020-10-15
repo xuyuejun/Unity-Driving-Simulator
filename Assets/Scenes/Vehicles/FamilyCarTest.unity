@@ -2199,13 +2199,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7605909804883333384}
-  m_LocalRotation: {x: 0.13052626, y: -0, z: -0, w: 0.9914449}
+  m_LocalRotation: {x: 0.13052616, y: 0, z: 0, w: 0.9914449}
   m_LocalPosition: {x: -0.33953196, y: 0.90598553, z: 0.5334542}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1824264415}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 15, y: 0, z: 0}
 --- !u!4 &2899098878378099937
 Transform:
   m_ObjectHideFlags: 0
@@ -3780,7 +3780,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7582304808195227972}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.64110583, y: 0.44, z: -2.5747666}
+  m_LocalPosition: {x: -0.64110583, y: 0, z: -2.5747666}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4345447602857940035}
@@ -3969,6 +3969,7 @@ MonoBehaviour:
   - {fileID: 1897296172930635508}
   - {fileID: 987759139020171022}
   - {fileID: 2647915196788896664}
+  SteeringWheelMesh: {fileID: 2883495220332134381}
   criticalSpeed: 5
   stepsBelow: 5
   stepsAbove: 1

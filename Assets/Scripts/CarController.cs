@@ -16,6 +16,7 @@ public class CarController : MonoBehaviour
     public float brakeTorque = 30000f;        // 刹车动力
     public Transform[] wheelMesh;             // 车轮模型
     public WheelCollider[] wheelColliders;    // 车轮碰撞器
+	public Transform SteeringWheelMesh;	  // 方向盘模型
 
 	public float criticalSpeed = 5f;
 	[Tooltip("Simulation sub-steps when the speed is above critical.")]
@@ -42,6 +43,7 @@ public class CarController : MonoBehaviour
     {
         simpleMoveCar();
         animateWheels ();
+		animateSteeringWheels ();
     }
 
     // 函数
@@ -57,6 +59,12 @@ public class CarController : MonoBehaviour
 			wheelMesh [i].rotation = wheelRotation;
 		}
     }
+
+	void animateSteeringWheels ()
+	{
+		Vector3 SteeringWheelPosition = new Vector3(15,0,-2 * im.Horizontal * maxAngle);
+		SteeringWheelMesh.transform.localEulerAngles = SteeringWheelPosition;
+	}
 
     void simpleMoveCar() {
 
