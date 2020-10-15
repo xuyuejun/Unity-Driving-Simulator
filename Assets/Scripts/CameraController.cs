@@ -12,16 +12,17 @@ public class CameraController : MonoBehaviour
     public bool m_SHowingFirstPersonView;
     void FixedUpdate()
     {
-        UpdateCamera ();
+        UpdateCamera();
     }
 
-    void Update() {
-        if (Input.GetKeyDown (switchViewKey))
+    void Update()
+    {
+        if (Input.GetKeyDown(switchViewKey))
         {
             m_SHowingFirstPersonView = !m_SHowingFirstPersonView;
-        }    
+        }
     }
-    private void UpdateCamera ()
+    private void UpdateCamera()
     {
         if (m_SHowingFirstPersonView)
         {
@@ -32,6 +33,6 @@ public class CameraController : MonoBehaviour
         {
             transform.position = Vector3.Lerp(transform.position, ThirdPersonTarget.position, Time.deltaTime * smoothing);
             transform.LookAt(lookAtTarget);
-        }    
+        }
     }
 }

@@ -4,25 +4,28 @@ using UnityEngine;
 
 internal enum InputType
 {
-	keyboard,
-	controller
+    keyboard,
+    controller
 }
 
 public class InputManager : MonoBehaviour
 {
-	[SerializeField]private InputType inputType;
+    [SerializeField] private InputType inputType;
 
-	public float Horizontal;
-	public float Torque;
-	public bool brake;
-	void Update ()
-	{
-		if (inputType == InputType.keyboard) {
-			Horizontal = Input.GetAxis ("Horizontal");
-			Torque = Input.GetAxis("Vertical");
-			brake = Input.GetKey(KeyCode.X);
-		} else {
-			// do nothing
-		}
-	}
+    public float Horizontal;
+    public float Torque;
+    public bool brake;
+    void Update()
+    {
+        if (inputType == InputType.keyboard)
+        {
+            Horizontal = Input.GetAxis("Horizontal");
+            Torque = Input.GetAxis("Vertical");
+            brake = Input.GetKey(KeyCode.X);
+        }
+        else
+        {
+            // do nothing
+        }
+    }
 }
