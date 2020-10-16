@@ -69,3 +69,8 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# Ignore 3rd-party assets right
+
+/[Aa]ssets/Enviro - Sky and Weather.meta
+/[Aa]ssets/Enviro - Sky and Weather/*
