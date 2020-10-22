@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
-[RequireComponent(typeof(InputManager))]
+using UnityEngine.InputSystem;
 
 public class CarController : MonoBehaviour
 {
@@ -18,36 +17,79 @@ public class CarController : MonoBehaviour
     public WheelCollider[] wheelColliders;    // 车轮碰撞器
     public Transform SteeringWheelMesh;   // 方向盘模型
 
-    public float criticalSpeed = 5f;
-    [Tooltip("Simulation sub-steps when the speed is above critical.")]
-    public int stepsBelow = 5;
-    [Tooltip("Simulation sub-steps when the speed is below critical.")]
-    public int stepsAbove = 1;
-
-    [Tooltip("The vehicle's drive type: rear-wheels drive, front-wheels drive or all-wheels drive.")]
-
-    [HideInInspector] public float fwdInput, backInput, horizontalInput;
-
-
-    private InputManager im;
     private Rigidbody car;
     public DriveType driveType;
 
-    void Awake()
+    // Input
+    public float horizontalInput;
+    public float acceleratorInput;
+    public float brakeInput;
+    public bool handBrakeInput;
+
+    // 输入控制
+    void OnDirection(InputValue value)
     {
-        car = GetComponent<Rigidbody>();
-        im = GetComponent<InputManager>();
+        Vector2 directionInput = value.Get<Vector2>();
+        horizontalInput = directionInput.x;
+    }
+    void OnAcceleratorPedal(InputValue value)
+    {
+        acceleratorInput = value.Get<float>();
+    }
+    void OnBrakePedal(InputValue value)
+    {
+        brakeInput = value.Get<float>();
+    }
+    void OnHandBrake(InputValue value)
+    {
+        handBrakeInput = value.isPressed;
     }
 
     void Update()
     {
-        simpleMoveCar();
+        steer();
+        accelerate();
+        handBrake();
         animateWheels();
         animateSteeringWheels();
     }
 
-    // 函数
+    void steer()
+    {
+        foreach (WheelCollider wheel in wheelColliders)
+        {
+            if (wheel.transform.localPosition.z > 0)
+            {
+                wheel.steerAngle = maxAngle * horizontalInput;
+            }
+        }
+    }
+    void accelerate()
+    {
+        float torque = maxTorque * (acceleratorInput - brakeInput);
 
+        foreach (WheelCollider wheel in wheelColliders)
+        {
+            if (wheel.transform.localPosition.z < 0 && driveType != DriveType.FrontWheelDrive)
+            {
+                wheel.motorTorque = torque;
+            }
+            if (wheel.transform.localPosition.z >= 0 && driveType != DriveType.RearWheelDrive)
+            {
+                wheel.motorTorque = torque;
+            }
+        }
+    }
+
+    void handBrake()
+    {
+        float handBrake = handBrakeInput ? brakeTorque : 0;
+
+        foreach (WheelCollider wheel in wheelColliders)
+        {
+            wheel.brakeTorque = handBrake;
+        }
+    }
     void animateWheels()
     {
         Vector3 wheelPosition = Vector3.zero;
@@ -63,40 +105,9 @@ public class CarController : MonoBehaviour
 
     void animateSteeringWheels()
     {
-        Vector3 SteeringWheelPosition = new Vector3(15, 0, -2 * im.Horizontal * maxAngle);
-        SteeringWheelMesh.transform.localEulerAngles = SteeringWheelPosition;
+        SteeringWheelMesh.transform.localEulerAngles = new Vector3(15, 0, -2 * horizontalInput * maxAngle);
     }
 
-    void simpleMoveCar()
-    {
-
-        wheelColliders[0].ConfigureVehicleSubsteps(criticalSpeed, stepsBelow, stepsAbove);
-
-        float angle = maxAngle * im.Horizontal;
-        float torque = maxTorque * im.Torque;
-        float handBrake = im.brake ? brakeTorque : 0;
-
-        foreach (WheelCollider wheel in wheelColliders)
-        {
-            // A simple car where front wheels steer while rear ones drive.
-            if (wheel.transform.localPosition.z > 0)
-            {
-                wheel.steerAngle = angle;
-            }
-            if (wheel.transform.localPosition.z < 0)
-            {
-                wheel.brakeTorque = handBrake;
-            }
-            if (wheel.transform.localPosition.z < 0 && driveType != DriveType.FrontWheelDrive)
-            {
-                wheel.motorTorque = torque;
-            }
-            if (wheel.transform.localPosition.z >= 0 && driveType != DriveType.RearWheelDrive)
-            {
-                wheel.motorTorque = torque;
-            }
-        }
-    }
     // void OnGUI()
     // {
     //     foreach (WheelCollider wc in GetComponentsInChildren<WheelCollider>()) {

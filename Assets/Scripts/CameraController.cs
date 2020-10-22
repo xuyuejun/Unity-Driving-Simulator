@@ -4,27 +4,25 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    public KeyCode switchViewKey = KeyCode.Space;
     public float smoothing = 6f;
     public Transform FirstPersonTarget;
     public Transform ThirdPersonTarget;
     public Transform lookAtTarget;
-    public bool m_SHowingFirstPersonView;
+    public bool ShowingFirstPersonView;
+    
+    void OnChangeCamera()
+    {
+        ShowingFirstPersonView = !ShowingFirstPersonView;
+    }
+
     void FixedUpdate()
     {
         UpdateCamera();
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(switchViewKey))
-        {
-            m_SHowingFirstPersonView = !m_SHowingFirstPersonView;
-        }
-    }
     private void UpdateCamera()
     {
-        if (m_SHowingFirstPersonView)
+        if (ShowingFirstPersonView)
         {
             transform.position = FirstPersonTarget.position;
             transform.rotation = FirstPersonTarget.rotation;
