@@ -16,15 +16,17 @@ public class CarController : MonoBehaviour
     public Transform[] wheelMesh;             // 车轮模型
     public WheelCollider[] wheelColliders;    // 车轮碰撞器
     public Transform SteeringWheelMesh;   // 方向盘模型
-
-    private Rigidbody car;
+    public Rigidbody car;
     public DriveType driveType;
-
-    // Input
+    [Header("Input")]
     public float horizontalInput;
     public float acceleratorInput;
     public float brakeInput;
     public bool handBrakeInput;
+    [Header("Car status")]
+    public float Mps;
+    public float Kph;
+    public float rpm;
 
     // 输入控制
     void OnDirection(InputValue value)
@@ -43,6 +45,10 @@ public class CarController : MonoBehaviour
     void OnHandBrake(InputValue value)
     {
         handBrakeInput = value.isPressed;
+    }
+
+    private void FixedUpdate() {
+        GetCarStatus();
     }
 
     void Update()
@@ -108,6 +114,11 @@ public class CarController : MonoBehaviour
         SteeringWheelMesh.transform.localEulerAngles = new Vector3(15, 0, -2 * horizontalInput * maxAngle);
     }
 
+    void GetCarStatus()
+    {
+        Mps = car.velocity.magnitude;
+        Kph = Mps * 3.6f;
+    }
     // void OnGUI()
     // {
     //     foreach (WheelCollider wc in GetComponentsInChildren<WheelCollider>()) {
