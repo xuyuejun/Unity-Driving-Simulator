@@ -8523,12 +8523,14 @@ MonoBehaviour:
   - {fileID: 987759139020171022}
   - {fileID: 2647915196788896664}
   SteeringWheelMesh: {fileID: 2883495220332134381}
+  car: {fileID: 7582304808195227973}
   driveType: 1
   horizontalInput: 0
   acceleratorInput: 0
   brakeInput: 0
   handBrakeInput: 0
-  speed: 0
+  Mps: 0
+  Kph: 0
   rpm: 0
 --- !u!114 &7582304808195227975
 MonoBehaviour:
