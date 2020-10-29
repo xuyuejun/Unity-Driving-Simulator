@@ -13,6 +13,7 @@ public class CarController : MonoBehaviour
     public float maxAngle = 30f;              // 最大角度
     public float motorTorque = 300f;            // 最大扭力
     public float brakeTorque = 30000f;        // 刹车动力
+    public float radius = 6;
     public Transform[] wheelMesh;             // 车轮模型
     public WheelCollider[] wheelColliders;    // 车轮碰撞器
     public Transform SteeringWheelMesh;   // 方向盘模型
@@ -49,7 +50,7 @@ public class CarController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        steer();
+        steerVehicle();
         accelerate();
         handBrake();
 
@@ -58,14 +59,24 @@ public class CarController : MonoBehaviour
         GetCarStatus();
     }
 
-    void steer()
+    void steerVehicle()
     {
-        foreach (WheelCollider wheel in wheelColliders)
+        //acerman steering formula
+        if (horizontalInput > 0)
         {
-            if (wheel.transform.localPosition.z > 0)
-            {
-                wheel.steerAngle = maxAngle * horizontalInput;
-            }
+            //rear tracks size is set to 1.5f       wheel base has been set to 2.55f
+            wheelColliders[0].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius + (1.5f / 2))) * horizontalInput;
+            wheelColliders[1].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius - (1.5f / 2))) * horizontalInput;
+        }
+        else if (horizontalInput < 0)
+        {
+            wheelColliders[0].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius - (1.5f / 2))) * horizontalInput;
+            wheelColliders[1].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius + (1.5f / 2))) * horizontalInput;
+        }
+        else
+        {
+            wheelColliders[0].steerAngle = 0;
+            wheelColliders[1].steerAngle = 0;
         }
     }
     void accelerate()
@@ -80,7 +91,7 @@ public class CarController : MonoBehaviour
             {
                 wheel.motorTorque = (motorTorque / 2) * (acceleratorInput - brakeInput);
             }
-            if(driveType == DriveType.AllWheelDrive)
+            if (driveType == DriveType.AllWheelDrive)
             {
                 wheel.motorTorque = (motorTorque / 4) * (acceleratorInput - brakeInput);
             }
