@@ -11,7 +11,7 @@ public class CarController : MonoBehaviour
         AllWheelDrive
     }
     public float maxAngle = 30f;              // 最大角度
-    public float maxTorque = 300f;            // 最大扭力
+    public float motorTorque = 300f;            // 最大扭力
     public float brakeTorque = 30000f;        // 刹车动力
     public Transform[] wheelMesh;             // 车轮模型
     public WheelCollider[] wheelColliders;    // 车轮碰撞器
@@ -47,17 +47,15 @@ public class CarController : MonoBehaviour
         handBrakeInput = value.isPressed;
     }
 
-    private void FixedUpdate() {
-        GetCarStatus();
-    }
-
-    void Update()
+    private void FixedUpdate()
     {
         steer();
         accelerate();
         handBrake();
+
         animateWheels();
         animateSteeringWheels();
+        GetCarStatus();
     }
 
     void steer()
@@ -72,17 +70,19 @@ public class CarController : MonoBehaviour
     }
     void accelerate()
     {
-        float torque = maxTorque * (acceleratorInput - brakeInput);
-
         foreach (WheelCollider wheel in wheelColliders)
         {
-            if (wheel.transform.localPosition.z < 0 && driveType != DriveType.FrontWheelDrive)
+            if (driveType == DriveType.FrontWheelDrive && wheel.transform.localPosition.z >= 0)
             {
-                wheel.motorTorque = torque;
+                wheel.motorTorque = (motorTorque / 2) * (acceleratorInput - brakeInput);
             }
-            if (wheel.transform.localPosition.z >= 0 && driveType != DriveType.RearWheelDrive)
+            if (driveType == DriveType.RearWheelDrive && wheel.transform.localPosition.z < 0)
             {
-                wheel.motorTorque = torque;
+                wheel.motorTorque = (motorTorque / 2) * (acceleratorInput - brakeInput);
+            }
+            if(driveType == DriveType.AllWheelDrive)
+            {
+                wheel.motorTorque = (motorTorque / 4) * (acceleratorInput - brakeInput);
             }
         }
     }
@@ -126,4 +126,23 @@ public class CarController : MonoBehaviour
     //     }
     //     GUILayout.Label ("horizontalInput: " + im.Horizontal);
     // }
+}
+
+public enum GearState
+{
+    ParkingGear = 1,      //停车挡
+    ReversGear = 2,       //倒挡
+    NeutralGear = 3,       //空挡
+    ForwardGear = 4,         //前进挡
+}
+
+public enum SpeedGear
+{
+    none,
+    Speed01,
+    Speed02,
+    Speed03,
+    Speed04,
+    Speed05,
+    Speed06
 }
