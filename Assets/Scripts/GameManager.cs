@@ -21,15 +21,14 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        updateKPH();
         ChangeGear();
-        updateNeedle();
     }
 
     // Update is called once per frame
     private void FixedUpdate()
     {
         updateKPH();
+        updateNeedle();
     }
 
     public void updateKPH()
@@ -45,8 +44,7 @@ public class GameManager : MonoBehaviour
     public void updateNeedle()
     {
         desiredPosition = startPosiziton - endPosition;
-        float engineRPM = 3100;
-        float temp = engineRPM / 10000;
+        float temp = car.engineRPM / 10000;
         needle.transform.eulerAngles = new Vector3(0, 0, (startPosiziton - temp * desiredPosition));
     }
 }

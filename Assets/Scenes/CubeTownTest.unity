@@ -2405,6 +2405,36 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 790531890}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1638073829
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1638073830}
+  m_Layer: 0
+  m_Name: CenterOfMass
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1638073830
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1638073829}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.272, z: -0.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7093752842632485886}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1654902989 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4884130492571914, guid: 331560f2206dc024cb084301a19c05ad,
@@ -8244,6 +8274,7 @@ Transform:
   - {fileID: 677390251}
   - {fileID: 1576482210}
   - {fileID: 367410948}
+  - {fileID: 1638073830}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8510,8 +8541,54 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxAngle: 30
-  maxTorque: 300
+  motorTorque: 1000
   brakeTorque: 30000
+  enginePower:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 100
+      inSlope: 0.05463319
+      outSlope: 0.05463319
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.3775194
+    - serializedVersion: 3
+      time: 5058.216
+      value: 900.88245
+      inSlope: -0.04667384
+      outSlope: -0.04667384
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.2719572
+      outWeight: 1
+    - serializedVersion: 3
+      time: 5888.1484
+      value: 0
+      inSlope: -2.840469
+      outSlope: -2.840469
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.16622916
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  gears:
+  - 5
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  totalPower: 0
+  engineRPM: 0
+  wheelsRPM: 0
+  radius: 6
+  DownForceValue: 50
+  centerOfMass: {fileID: 1638073829}
   wheelMesh:
   - {fileID: 333788912}
   - {fileID: 624245736}
@@ -8523,15 +8600,21 @@ MonoBehaviour:
   - {fileID: 987759139020171022}
   - {fileID: 2647915196788896664}
   SteeringWheelMesh: {fileID: 2883495220332134381}
-  car: {fileID: 7582304808195227973}
+  carRigidbody: {fileID: 7582304808195227973}
   driveType: 1
   horizontalInput: 0
   acceleratorInput: 0
   brakeInput: 0
   handBrakeInput: 0
+  gearNum: 0
   Mps: 0
   Kph: 0
   rpm: 0
+  slip:
+  - 0
+  - 0
+  - 0
+  - 0
 --- !u!114 &7582304808195227975
 MonoBehaviour:
   m_ObjectHideFlags: 0

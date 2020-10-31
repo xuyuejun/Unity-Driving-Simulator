@@ -10,14 +10,25 @@ public class CarController : MonoBehaviour
         RearWheelDrive,
         AllWheelDrive
     }
+    [Header("settings")]
     public float maxAngle = 30f;              // 最大角度
     public float motorTorque = 300f;            // 最大扭力
     public float brakeTorque = 30000f;        // 刹车动力
+    public AnimationCurve enginePower;
+    public float[] gears;
+    [Header("Values")]
+    public float totalPower;
+    public float engineRPM;
+    public float wheelsRPM;
     public float radius = 6;
+    public float DownForceValue = 50;
+    private float smoothTime = 0.09f;
+    [Header("Objects")]
+    public GameObject centerOfMass;
     public Transform[] wheelMesh;             // 车轮模型
     public WheelCollider[] wheelColliders;    // 车轮碰撞器
     public Transform SteeringWheelMesh;   // 方向盘模型
-    public Rigidbody car;
+    public Rigidbody carRigidbody;
     public DriveType driveType;
     [Header("Input")]
     public float horizontalInput;
@@ -25,9 +36,12 @@ public class CarController : MonoBehaviour
     public float brakeInput;
     public bool handBrakeInput;
     [Header("Car status")]
+    public int gearNum = 0;
     public float Mps;
     public float Kph;
     public float rpm;
+    [Header("Debugger")]
+    public float[] slip = new float[4];
 
     // 输入控制
     void OnDirection(InputValue value)
@@ -48,15 +62,48 @@ public class CarController : MonoBehaviour
         handBrakeInput = value.isPressed;
     }
 
-    private void FixedUpdate()
+    void Awake()
     {
-        steerVehicle();
-        accelerate();
-        handBrake();
+        carRigidbody.centerOfMass = centerOfMass.transform.localPosition;
+    }
 
+    void Update()
+    {
         animateWheels();
         animateSteeringWheels();
+    }
+
+    void FixedUpdate()
+    {
+        steerVehicle();
+        handBrake();
+
+        calculateEnginePower();
+
+        addDownForce();
         GetCarStatus();
+        // getFriction();
+    }
+
+    void calculateEnginePower()
+    {
+        wheelRPM();
+        totalPower = enginePower.Evaluate(engineRPM) * gears[gearNum] * acceleratorInput;
+        float velocity = 0.0f;
+        engineRPM = Mathf.SmoothDamp(engineRPM, 1000 + (Mathf.Abs(wheelsRPM) * 3.6f * (gears[gearNum])), ref velocity, smoothTime);
+        accelerate();
+    }
+
+    void wheelRPM()
+    {
+        float sum = 0;
+        int R = 0;
+        for (int i = 0; i < 4; i++)
+        {
+            sum += wheelColliders[i].rpm;
+            R++;
+        }
+        wheelsRPM = (R != 0) ? sum / R : 0;
     }
 
     void steerVehicle()
@@ -85,15 +132,15 @@ public class CarController : MonoBehaviour
         {
             if (driveType == DriveType.FrontWheelDrive && wheel.transform.localPosition.z >= 0)
             {
-                wheel.motorTorque = (motorTorque / 2) * (acceleratorInput - brakeInput);
+                wheel.motorTorque = (totalPower / 2) * (acceleratorInput - brakeInput);
             }
             if (driveType == DriveType.RearWheelDrive && wheel.transform.localPosition.z < 0)
             {
-                wheel.motorTorque = (motorTorque / 2) * (acceleratorInput - brakeInput);
+                wheel.motorTorque = (totalPower / 2) * (acceleratorInput - brakeInput);
             }
             if (driveType == DriveType.AllWheelDrive)
             {
-                wheel.motorTorque = (motorTorque / 4) * (acceleratorInput - brakeInput);
+                wheel.motorTorque = (totalPower / 4) * (acceleratorInput - brakeInput);
             }
         }
     }
@@ -127,8 +174,22 @@ public class CarController : MonoBehaviour
 
     void GetCarStatus()
     {
-        Mps = car.velocity.magnitude;
+        Mps = carRigidbody.velocity.magnitude;
         Kph = Mps * 3.6f;
+    }
+    void addDownForce()
+    {
+        carRigidbody.AddForce(-transform.up * DownForceValue * carRigidbody.velocity.magnitude);
+    }
+
+    void getFriction()
+    {
+        for (int i = 0; i < wheelMesh.Length; i++)
+        {
+            WheelHit wheelHit;
+            wheelColliders[i].GetGroundHit(out wheelHit);
+            slip[i] = wheelHit.sidewaysSlip;
+        }
     }
     // void OnGUI()
     // {
@@ -137,23 +198,4 @@ public class CarController : MonoBehaviour
     //     }
     //     GUILayout.Label ("horizontalInput: " + im.Horizontal);
     // }
-}
-
-public enum GearState
-{
-    ParkingGear = 1,      //停车挡
-    ReversGear = 2,       //倒挡
-    NeutralGear = 3,       //空挡
-    ForwardGear = 4,         //前进挡
-}
-
-public enum SpeedGear
-{
-    none,
-    Speed01,
-    Speed02,
-    Speed03,
-    Speed04,
-    Speed05,
-    Speed06
 }
