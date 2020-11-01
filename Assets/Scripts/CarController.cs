@@ -15,7 +15,7 @@ public class CarController : MonoBehaviour
     public float motorTorque = 300f;            // 最大扭力
     public float brakeTorque = 30000f;        // 刹车动力
     public AnimationCurve enginePower;
-    public float[] gears;
+    public float[] GearRatios = new float[] { 4.17f, 3.14f, 2.11f, 1.67f, 1.28f, 1f, 0.84f, 0.67f };
     [Header("Values")]
     public float totalPower;
     public float engineRPM;
@@ -88,9 +88,14 @@ public class CarController : MonoBehaviour
     void calculateEnginePower()
     {
         wheelRPM();
-        totalPower = enginePower.Evaluate(engineRPM) * gears[gearNum] * acceleratorInput;
+        totalPower = enginePower.Evaluate(engineRPM) * GearRatios[gearNum] * acceleratorInput;
         float velocity = 0.0f;
-        engineRPM = Mathf.SmoothDamp(engineRPM, 1000 + (Mathf.Abs(wheelsRPM) * 3.6f * (gears[gearNum])), ref velocity, smoothTime);
+        engineRPM = Mathf.SmoothDamp(engineRPM, 1000 + (Mathf.Abs(wheelsRPM) * 3.6f * (GearRatios[gearNum])), ref velocity, smoothTime);
+        if(engineRPM < 0.02f)
+        {
+            engineRPM = 0.0f;
+        }
+        
         accelerate();
     }
 
@@ -104,6 +109,11 @@ public class CarController : MonoBehaviour
             R++;
         }
         wheelsRPM = (R != 0) ? sum / R : 0;
+    }
+
+    void shifter()
+    {
+        
     }
 
     void steerVehicle()

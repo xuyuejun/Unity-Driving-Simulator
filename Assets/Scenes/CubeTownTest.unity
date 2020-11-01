@@ -8542,47 +8542,67 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxAngle: 30
   motorTorque: 1000
-  brakeTorque: 30000
+  brakeTorque: 3000
   enginePower:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
-      value: 100
-      inSlope: 0.05463319
-      outSlope: 0.05463319
+      time: -24.53395
+      value: 102.121
+      inSlope: 0.15578763
+      outSlope: 0.15578763
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.3775194
+      outWeight: 0.29604456
     - serializedVersion: 3
-      time: 5058.216
-      value: 900.88245
-      inSlope: -0.04667384
-      outSlope: -0.04667384
+      time: 1295.9966
+      value: 502.2438
+      inSlope: 0.31228223
+      outSlope: 0.31228223
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.2724112
+    - serializedVersion: 3
+      time: 2597.299
+      value: 716.32446
+      inSlope: 0.0023059994
+      outSlope: 0.0023059994
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.7339793
+    - serializedVersion: 3
+      time: 4396.412
+      value: 724.8127
+      inSlope: -0.0008931554
+      outSlope: -0.0008931554
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.2719572
-      outWeight: 1
+      outWeight: 0.7336589
     - serializedVersion: 3
       time: 5888.1484
       value: 0
-      inSlope: -2.840469
-      outSlope: -2.840469
+      inSlope: -1.4980679
+      outSlope: -1.4980679
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.16622916
+      inWeight: 0.078335725
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  gears:
-  - 5
-  - 4
-  - 5
-  - 6
-  - 7
-  - 8
+  GearRatios:
+  - 4.17
+  - 3.14
+  - 2.11
+  - 1.67
+  - 1.28
+  - 1
+  - 0.84
+  - 0.67
   totalPower: 0
   engineRPM: 0
   wheelsRPM: 0
