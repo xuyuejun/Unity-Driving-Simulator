@@ -17,16 +17,19 @@ public class CarController : MonoBehaviour
     public float engineRPM;
     [Header("settings")]
     public float maxAngle = 30f;              // 最大角度
-    public float motorTorque = 300f;            // 最大扭力
     public float brakeTorque = 30000f;        // 刹车动力
-    public AnimationCurve enginePower;
-    public float[] GearRatios = new float[] { 4.17f, 3.14f, 2.11f, 1.67f, 1.28f, 1f, 0.84f, 0.67f };
     [Header("Engine")]
+    public float MinRPM;
+    public float MaxRPM;
+    public float MaxTorque;
+    public float FinalDriveRatio = 2.56f;
+    public float smoothTime = 0.3f;
     public float totalPower;
     public float wheelsRPM;
     public float radius = 6;
     public float DownForceValue = 50;
-    private float smoothTime = 0.09f;
+    public AnimationCurve RPMCurve;
+    public float[] GearRatios = new float[] { 4.17f, 3.14f, 2.11f, 1.67f, 1.28f, 1f, 0.84f, 0.67f };
     [Header("Objects")]
     public GameObject centerOfMass;
     public Transform[] wheelMesh;             // 车轮模型
@@ -87,9 +90,9 @@ public class CarController : MonoBehaviour
     void calculateEnginePower()
     {
         wheelRPM();
-        totalPower = enginePower.Evaluate(engineRPM) * GearRatios[GearNum] * acceleratorInput;
         float velocity = 0.0f;
-        engineRPM = Mathf.SmoothDamp(engineRPM, 1000 + (Mathf.Abs(wheelsRPM) * 3.6f * (GearRatios[GearNum])), ref velocity, smoothTime);
+        engineRPM = Mathf.SmoothDamp(engineRPM, MinRPM + (Mathf.Abs(wheelsRPM) * FinalDriveRatio * GearRatios[GearNum]), ref velocity, smoothTime);
+        totalPower = RPMCurve.Evaluate(engineRPM / MaxRPM) * GearRatios[GearNum] * FinalDriveRatio * MaxTorque * acceleratorInput;
         if (engineRPM < 0.02f)
         {
             engineRPM = 0.0f;
@@ -100,14 +103,22 @@ public class CarController : MonoBehaviour
 
     void wheelRPM()
     {
-        float sum = 0;
-        int R = 0;
-        for (int i = 0; i < 4; i++)
+        if (driveType == DriveType.FrontWheelDrive)
         {
-            sum += wheelColliders[i].rpm;
-            R++;
+            wheelsRPM = (wheelColliders[0].rpm + wheelColliders[1].rpm) / 2f;
         }
-        wheelsRPM = (R != 0) ? sum / R : 0;
+        if (driveType == DriveType.RearWheelDrive)
+        {
+            wheelsRPM = (wheelColliders[2].rpm + wheelColliders[3].rpm) / 2f;
+        }
+        if (driveType == DriveType.AllWheelDrive)
+        {
+            wheelsRPM = (wheelColliders[0].rpm + wheelColliders[1].rpm + wheelColliders[2].rpm + wheelColliders[3].rpm) / 4f;
+        }
+        if (wheelsRPM < 0)
+        {
+            wheelsRPM = 0;
+        }
     }
     void steerVehicle()
     {

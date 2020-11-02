@@ -9172,55 +9172,54 @@ MonoBehaviour:
   CarSpeed: 0
   engineRPM: 0
   maxAngle: 30
-  motorTorque: 1000
   brakeTorque: 3000
-  enginePower:
+  MinRPM: 1000
+  MaxRPM: 6000
+  MaxTorque: 250
+  FinalDriveRatio: 2.56
+  smoothTime: 0.3
+  totalPower: 0
+  wheelsRPM: 0
+  radius: 6
+  DownForceValue: 50
+  RPMCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: -24.53395
-      value: 102.121
-      inSlope: 0.15578763
-      outSlope: 0.15578763
+      time: 0
+      value: 0.365
+      inSlope: 3.4715734
+      outSlope: 3.4715734
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.29604456
+      outWeight: 0.2542053
     - serializedVersion: 3
-      time: 1295.9966
-      value: 502.2438
-      inSlope: 0.31228223
-      outSlope: 0.31228223
+      time: 0.1
+      value: 0.659
+      inSlope: 1.5908784
+      outSlope: 1.5908784
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.51375675
+      outWeight: 0.20619254
+    - serializedVersion: 3
+      time: 0.8
+      value: 1
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.2724112
+      outWeight: 1
     - serializedVersion: 3
-      time: 2597.299
-      value: 716.32446
-      inSlope: 0.0023059994
-      outSlope: 0.0023059994
+      time: 1
+      value: 0.5
+      inSlope: -2.4281628
+      outSlope: -2.4281628
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.7339793
-    - serializedVersion: 3
-      time: 4396.412
-      value: 724.8127
-      inSlope: -0.0008931554
-      outSlope: -0.0008931554
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.2719572
-      outWeight: 0.7336589
-    - serializedVersion: 3
-      time: 5888.1484
-      value: 0
-      inSlope: -1.4980679
-      outSlope: -1.4980679
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.078335725
+      inWeight: 0.17412902
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -9234,10 +9233,6 @@ MonoBehaviour:
   - 1
   - 0.84
   - 0.67
-  totalPower: 0
-  wheelsRPM: 0
-  radius: 6
-  DownForceValue: 50
   centerOfMass: {fileID: 1638073829}
   wheelMesh:
   - {fileID: 333788912}
