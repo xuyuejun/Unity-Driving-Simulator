@@ -10,15 +10,19 @@ public class CarController : MonoBehaviour
         RearWheelDrive,
         AllWheelDrive
     }
+    [Header("Car status")]
+    public int GearNum = 0;
+    public int GearNumShow;
+    public float CarSpeed;
+    public float engineRPM;
     [Header("settings")]
     public float maxAngle = 30f;              // 最大角度
     public float motorTorque = 300f;            // 最大扭力
     public float brakeTorque = 30000f;        // 刹车动力
     public AnimationCurve enginePower;
     public float[] GearRatios = new float[] { 4.17f, 3.14f, 2.11f, 1.67f, 1.28f, 1f, 0.84f, 0.67f };
-    [Header("Values")]
+    [Header("Engine")]
     public float totalPower;
-    public float engineRPM;
     public float wheelsRPM;
     public float radius = 6;
     public float DownForceValue = 50;
@@ -35,11 +39,6 @@ public class CarController : MonoBehaviour
     public float acceleratorInput;
     public float brakeInput;
     public bool handBrakeInput;
-    [Header("Car status")]
-    public int gearNum = 0;
-    public float Mps;
-    public float Kph;
-    public float rpm;
     [Header("Debugger")]
     public float[] slip = new float[4];
 
@@ -88,14 +87,14 @@ public class CarController : MonoBehaviour
     void calculateEnginePower()
     {
         wheelRPM();
-        totalPower = enginePower.Evaluate(engineRPM) * GearRatios[gearNum] * acceleratorInput;
+        totalPower = enginePower.Evaluate(engineRPM) * GearRatios[GearNum] * acceleratorInput;
         float velocity = 0.0f;
-        engineRPM = Mathf.SmoothDamp(engineRPM, 1000 + (Mathf.Abs(wheelsRPM) * 3.6f * (GearRatios[gearNum])), ref velocity, smoothTime);
-        if(engineRPM < 0.02f)
+        engineRPM = Mathf.SmoothDamp(engineRPM, 1000 + (Mathf.Abs(wheelsRPM) * 3.6f * (GearRatios[GearNum])), ref velocity, smoothTime);
+        if (engineRPM < 0.02f)
         {
             engineRPM = 0.0f;
         }
-        
+
         accelerate();
     }
 
@@ -110,12 +109,6 @@ public class CarController : MonoBehaviour
         }
         wheelsRPM = (R != 0) ? sum / R : 0;
     }
-
-    void shifter()
-    {
-        
-    }
-
     void steerVehicle()
     {
         //acerman steering formula
@@ -184,8 +177,8 @@ public class CarController : MonoBehaviour
 
     void GetCarStatus()
     {
-        Mps = carRigidbody.velocity.magnitude;
-        Kph = Mps * 3.6f;
+        CarSpeed = carRigidbody.velocity.magnitude * 3.6f;
+        GearNumShow = GearNum + 1;
     }
     void addDownForce()
     {
