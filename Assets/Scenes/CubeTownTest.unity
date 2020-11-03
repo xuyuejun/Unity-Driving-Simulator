@@ -401,7 +401,6 @@ GameObject:
   - component: {fileID: 126008304}
   - component: {fileID: 126008303}
   - component: {fileID: 126008305}
-  - component: {fileID: 126008308}
   - component: {fileID: 126008309}
   m_Layer: 0
   m_Name: Main Camera
@@ -500,41 +499,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &126008308
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 126008302}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd1c5eb0beb1a6345a332df5e0757937, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  thickness: 1
-  width: 0.35
-  height: 0.34
-  widthSeconds: 2
-  heightMeters: 3
-  bgColor:
-    serializedVersion: 2
-    rgba: 3487029
-  forwardColor:
-    serializedVersion: 2
-    rgba: 4278190335
-  sidewaysColor:
-    serializedVersion: 2
-    rgba: 4278255360
-  guidesColor:
-    serializedVersion: 2
-    rgba: 4294901760
-  zeroColor:
-    serializedVersion: 2
-    rgba: 4278190080
-  vehicleBody: {fileID: 7582304808195227973}
-  timeTravel: 0
-  wheelConfigs: []
 --- !u!114 &126008309
 MonoBehaviour:
   m_ObjectHideFlags: 0
