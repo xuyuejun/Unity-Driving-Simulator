@@ -42,6 +42,7 @@ public class CarController : MonoBehaviour
     public float acceleratorInput;
     public float brakeInput;
     public bool handBrakeInput;
+    public bool HeadLight;
     [Header("Debugger")]
     public float[] slip = new float[4];
 
@@ -62,6 +63,10 @@ public class CarController : MonoBehaviour
     void OnHandBrake(InputValue value)
     {
         handBrakeInput = value.isPressed;
+    }
+    void OnHeadLight()
+    {
+        HeadLight = !HeadLight;
     }
 
     void Awake()
