@@ -15,7 +15,7 @@ public class CameraController : MonoBehaviour
         ShowingFirstPersonView = !ShowingFirstPersonView;
     }
 
-    void FixedUpdate()
+    void Update()
     {
         UpdateCamera();
     }
