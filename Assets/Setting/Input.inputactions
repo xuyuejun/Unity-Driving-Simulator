@@ -131,6 +131,17 @@
                 },
                 {
                     "name": "",
+                    "id": "758aea7d-34ce-412a-8f50-220e7d884875",
+                    "path": "<HID::DragonRise Inc.   Generic   USB  Joystick  >/stick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Direction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "af23253b-6fc3-451c-9091-d35d31d611bd",
                     "path": "<XInputController>/buttonWest",
                     "interactions": "",
@@ -153,6 +164,17 @@
                 },
                 {
                     "name": "",
+                    "id": "f1ab00f0-8e54-4918-b86d-4e228c4ddf40",
+                    "path": "<HID::DragonRise Inc.   Generic   USB  Joystick  >/stick/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "HandBrake",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "1d6222d1-c6d3-4917-91b3-1826059c648f",
                     "path": "<Keyboard>/upArrow",
                     "interactions": "",
@@ -166,6 +188,17 @@
                     "name": "",
                     "id": "0cb4282f-abaa-433a-bf4b-858096e6fb9a",
                     "path": "<XInputController>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AcceleratorPedal",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ce896bbe-fa29-48f0-8b5f-01c1d4ff4266",
+                    "path": "<HID::DragonRise Inc.   Generic   USB  Joystick  >/stick/up",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -219,6 +252,17 @@
                 },
                 {
                     "name": "",
+                    "id": "4bd35176-3168-4208-ad32-cd65877a1c0a",
+                    "path": "<HID::DragonRise Inc.   Generic   USB  Joystick  >/trigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "HeadLight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "b371bb8a-5b10-4cc1-8cda-380b886b0273",
                     "path": "<Keyboard>/w",
                     "interactions": "",
@@ -230,8 +274,30 @@
                 },
                 {
                     "name": "",
+                    "id": "05081f1b-9ffe-402a-b6fd-b686b2f279c0",
+                    "path": "<HID::DragonRise Inc.   Generic   USB  Joystick  >/button2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UpShift",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "6729eb74-c80b-4282-9d4e-a1213ae4095b",
                     "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DownShift",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "820b65f2-6d69-44c8-8706-1846ff7bac0e",
+                    "path": "<HID::DragonRise Inc.   Generic   USB  Joystick  >/trigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
