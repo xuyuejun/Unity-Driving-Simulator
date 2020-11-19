@@ -2906,6 +2906,101 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 393246377}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &416619460
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 416619463}
+  - component: {fileID: 416619462}
+  - component: {fileID: 416619461}
+  m_Layer: 0
+  m_Name: Enviro Sky Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &416619461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 416619460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49f6a13ef829685498922f24f5efe6a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onHourPassedActions:
+    m_PersistentCalls:
+      m_Calls: []
+  onDayPassedActions:
+    m_PersistentCalls:
+      m_Calls: []
+  onYearPassedActions:
+    m_PersistentCalls:
+      m_Calls: []
+  onWeatherChangedActions:
+    m_PersistentCalls:
+      m_Calls: []
+  onSeasonChangedActions:
+    m_PersistentCalls:
+      m_Calls: []
+  onNightActions:
+    m_PersistentCalls:
+      m_Calls: []
+  onDayActions:
+    m_PersistentCalls:
+      m_Calls: []
+  onZoneChangedActions:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &416619462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 416619460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5817b89540e278546a278ae549dd74f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dontDestroy: 0
+  showSetup: 1
+  showInstances: 1
+  showThirdParty: 0
+  showUtilities: 0
+  showThirdPartyShaders: 0
+  showThirdPartyMisc: 0
+  showThirdPartyNetwork: 0
+  showUtiliies: 0
+  cube: {fileID: 0}
+  skyBaking:
+    resolution: 2048
+  currentEnviroSkyVersion: 2
+  enviroHDInstance: {fileID: 0}
+  enviroLWInstance: {fileID: 0}
+--- !u!4 &416619463
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 416619460}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &421534106
 PrefabInstance:
   m_ObjectHideFlags: 0
