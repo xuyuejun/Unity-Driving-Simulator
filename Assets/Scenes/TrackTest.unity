@@ -16661,17 +16661,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c08f1affc4717e643a238c0511b6ce4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GearNum: 0
+  GearNum: 1
   GearNumShow: 0
   CarSpeed: 0
   engineRPM: 0
   maxAngle: 30
   brakeTorque: 3000
   MinRPM: 800
-  MaxRPM: 5500
+  MaxRPM: 6600
   MaxTorque: 250
   FinalDriveRatio: 2.56
-  smoothTime: 0.3
+  smoothTime: 0.2
   totalPower: 0
   wheelsRPM: 0
   radius: 6
@@ -16719,11 +16719,11 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   GearRatios:
+  - 0
   - 4.17
   - 3.14
   - 2.11
   - 1.67
-  - 1.28
   - 1
   - 0.84
   - 0.67
@@ -16741,6 +16741,7 @@ MonoBehaviour:
   SteeringWheelMesh: {fileID: 2883495220332134381}
   carRigidbody: {fileID: 7582304808195227973}
   driveType: 1
+  TransmissionType: 0
   horizontalInput: 0
   acceleratorInput: 0
   brakeInput: 0

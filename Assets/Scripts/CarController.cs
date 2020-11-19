@@ -10,6 +10,11 @@ public class CarController : MonoBehaviour
         RearWheelDrive,
         AllWheelDrive
     }
+    public enum Transmission
+    {
+        automatic,
+        manual
+    }
     [Header("Car status")]
     public int GearNum = 0;
     public int GearNumShow;
@@ -37,6 +42,7 @@ public class CarController : MonoBehaviour
     public Transform SteeringWheelMesh;   // 方向盘模型
     public Rigidbody carRigidbody;
     public DriveType driveType;
+    public Transmission TransmissionType;
     [Header("Input")]
     public float horizontalInput;
     public float acceleratorInput;
@@ -68,6 +74,20 @@ public class CarController : MonoBehaviour
     {
         HeadLight = !HeadLight;
     }
+    void OnUpShift()
+    {
+        if (TransmissionType == Transmission.manual)
+        {
+            GearNum++;
+        }
+    }
+    void OnDownShift()
+    {
+        if (TransmissionType == Transmission.manual)
+        {
+            GearNum--;
+        }
+    }
 
     void Awake()
     {
@@ -82,6 +102,7 @@ public class CarController : MonoBehaviour
 
     void FixedUpdate()
     {
+        shifter();
         steerVehicle();
         handBrake();
 
@@ -194,7 +215,7 @@ public class CarController : MonoBehaviour
     void GetCarStatus()
     {
         CarSpeed = carRigidbody.velocity.magnitude * 3.6f;
-        GearNumShow = GearNum + 1;
+        GearNumShow = GearNum;
     }
     void addDownForce()
     {
@@ -208,6 +229,22 @@ public class CarController : MonoBehaviour
             WheelHit wheelHit;
             wheelColliders[i].GetGroundHit(out wheelHit);
             slip[i] = wheelHit.sidewaysSlip;
+        }
+    }
+    void shifter()
+    {
+        if (TransmissionType == Transmission.automatic)
+        {
+            if (engineRPM > MaxRPM - 1000 && GearNum < GearRatios.Length - 1)
+            {
+                GearNum++;
+                engineRPM = engineRPM - 2000;
+            }
+            if (engineRPM < MinRPM + 1000 && GearNum > 1)
+            {
+                GearNum--;
+                engineRPM = engineRPM + 1500;
+            }
         }
     }
     // void OnGUI()

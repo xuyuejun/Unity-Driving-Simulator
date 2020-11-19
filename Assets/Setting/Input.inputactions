@@ -44,6 +44,22 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "UpShift",
+                    "type": "Button",
+                    "id": "5310b8ee-400f-42b9-bc4f-643dab6ec214",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "DownShift",
+                    "type": "Button",
+                    "id": "d4247ec8-dca2-47ea-bc9b-7d90cbb6243b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -198,6 +214,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "HeadLight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b371bb8a-5b10-4cc1-8cda-380b886b0273",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UpShift",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6729eb74-c80b-4282-9d4e-a1213ae4095b",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DownShift",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
