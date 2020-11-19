@@ -9,7 +9,7 @@ public class CameraController : MonoBehaviour
     public Transform ThirdPersonTarget;
     public Transform lookAtTarget;
     public bool ShowingFirstPersonView;
-    
+
     void OnChangeCamera()
     {
         ShowingFirstPersonView = !ShowingFirstPersonView;
@@ -17,17 +17,15 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
-        UpdateCamera();
-    }
-
-    private void UpdateCamera()
-    {
         if (ShowingFirstPersonView)
         {
             transform.position = FirstPersonTarget.position;
             transform.rotation = FirstPersonTarget.rotation;
         }
-        else
+    }
+    void FixedUpdate()
+    {
+        if (!ShowingFirstPersonView)
         {
             transform.position = Vector3.Lerp(transform.position, ThirdPersonTarget.position, Time.deltaTime * smoothing);
             transform.LookAt(lookAtTarget);
