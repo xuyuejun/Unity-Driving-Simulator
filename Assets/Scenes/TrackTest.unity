@@ -16662,9 +16662,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GearNum: 1
-  GearNumShow: 0
   CarSpeed: 0
   engineRPM: 0
+  ReserverGear: 0
   maxAngle: 30
   brakeTorque: 3000
   MinRPM: 800
@@ -16719,7 +16719,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   GearRatios:
-  - 0
+  - -4
   - 4.17
   - 3.21
   - 2.5

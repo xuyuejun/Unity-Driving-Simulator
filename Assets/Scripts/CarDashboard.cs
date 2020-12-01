@@ -30,7 +30,7 @@ public class CarDashboard : MonoBehaviour
     void Update()
     {
         Speed = car.CarSpeed;
-        GearNum = car.GearNumShow;
+        GearNum = car.GearNum;
         RPM = car.engineRPM;
         updateNeedle();
         updateSpeedometerAndGear();
@@ -63,10 +63,8 @@ public class CarDashboard : MonoBehaviour
 		digit1.text = d1.ToString ();
 		digit0.text = d0.ToString ();
 
-		if (GearNum == -1)
+		if (GearNum == 0)
 			gear.text = "R";
-		else if (GearNum == 0)
-			gear.text = "N";
 		else
 			gear.text = GearNum.ToString ();
     }

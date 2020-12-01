@@ -17,9 +17,9 @@ public class CarController : MonoBehaviour
     }
     [Header("Car status")]
     public int GearNum = 0;
-    public int GearNumShow;
     public float CarSpeed;
     public float engineRPM;
+    public bool ReserverGear = false;
     [Header("settings")]
     public float maxAngle = 30f;              // 最大角度
     public float brakeTorque = 30000f;        // 刹车动力
@@ -66,9 +66,18 @@ public class CarController : MonoBehaviour
     {
         brakeInput = value.Get<float>();
     }
-    void OnHandBrake(InputValue value)
+    void OnReverseGear()
     {
-        handBrakeInput = value.isPressed;
+        if (ReserverGear)
+        {
+            ReserverGear = !ReserverGear;
+            GearNum = 0;
+        }
+        else
+        {
+            ReserverGear = !ReserverGear;
+            GearNum = 1;
+        }
     }
     void OnHeadLight()
     {
@@ -102,15 +111,13 @@ public class CarController : MonoBehaviour
 
     void FixedUpdate()
     {
-        shifter();
         steerVehicle();
-        handBrake();
-
-        calculateEnginePower();
-
         addDownForce();
         GetCarStatus();
-        // getFriction();
+        calculateEnginePower();
+        ForwardBrake();
+        accelerate();
+        shifter();
     }
 
     void calculateEnginePower()
@@ -141,10 +148,6 @@ public class CarController : MonoBehaviour
         {
             wheelsRPM = (wheelColliders[0].rpm + wheelColliders[1].rpm + wheelColliders[2].rpm + wheelColliders[3].rpm) / 4f;
         }
-        if (wheelsRPM < 0)
-        {
-            wheelsRPM = 0;
-        }
     }
     void steerVehicle()
     {
@@ -172,26 +175,24 @@ public class CarController : MonoBehaviour
         {
             if (driveType == DriveType.FrontWheelDrive && wheel.transform.localPosition.z >= 0)
             {
-                wheel.motorTorque = (totalPower / 2) * (acceleratorInput - brakeInput);
+                wheel.motorTorque = (totalPower / 2) * acceleratorInput;
             }
             if (driveType == DriveType.RearWheelDrive && wheel.transform.localPosition.z < 0)
             {
-                wheel.motorTorque = (totalPower / 2) * (acceleratorInput - brakeInput);
+                wheel.motorTorque = (totalPower / 2) * acceleratorInput;
             }
             if (driveType == DriveType.AllWheelDrive)
             {
-                wheel.motorTorque = (totalPower / 4) * (acceleratorInput - brakeInput);
+                wheel.motorTorque = (totalPower / 4) * acceleratorInput;
             }
         }
     }
 
-    void handBrake()
+    void ForwardBrake()
     {
-        float handBrake = handBrakeInput ? brakeTorque : 0;
-
         foreach (WheelCollider wheel in wheelColliders)
         {
-            wheel.brakeTorque = handBrake;
+            wheel.brakeTorque = brakeInput * brakeTorque;
         }
     }
     void animateWheels()
@@ -215,25 +216,14 @@ public class CarController : MonoBehaviour
     void GetCarStatus()
     {
         CarSpeed = carRigidbody.velocity.magnitude * 3.6f;
-        GearNumShow = GearNum;
     }
     void addDownForce()
     {
         carRigidbody.AddForce(-transform.up * DownForceValue * carRigidbody.velocity.magnitude);
     }
-
-    void getFriction()
-    {
-        for (int i = 0; i < wheelMesh.Length; i++)
-        {
-            WheelHit wheelHit;
-            wheelColliders[i].GetGroundHit(out wheelHit);
-            slip[i] = wheelHit.sidewaysSlip;
-        }
-    }
     void shifter()
     {
-        if (TransmissionType == Transmission.automatic)
+        if (TransmissionType == Transmission.automatic && GearNum != 0)
         {
             if (engineRPM > MaxRPM - 1000 && GearNum < GearRatios.Length - 1)
             {
@@ -247,11 +237,4 @@ public class CarController : MonoBehaviour
             }
         }
     }
-    // void OnGUI()
-    // {
-    //     foreach (WheelCollider wc in GetComponentsInChildren<WheelCollider>()) {
-    //         GUILayout.Label (string.Format("{0} sprung: {1}, k: {2}, d: {3}", wc.name, wc.sprungMass, wc.suspensionSpring.spring, wc.suspensionSpring.damper));
-    //     }
-    //     GUILayout.Label ("horizontalInput: " + im.Horizontal);
-    // }
 }

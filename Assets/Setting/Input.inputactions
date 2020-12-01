@@ -22,12 +22,12 @@
                     "interactions": ""
                 },
                 {
-                    "name": "HandBrake",
+                    "name": "ReverseGear",
                     "type": "Button",
                     "id": "154ea3ea-c598-4326-9ea2-df1a9b52d357",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press(behavior=2)"
+                    "interactions": ""
                 },
                 {
                     "name": "BrakePedal",
@@ -147,7 +147,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "HandBrake",
+                    "action": "ReverseGear",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -158,7 +158,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "HandBrake",
+                    "action": "ReverseGear",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -169,7 +169,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "HandBrake",
+                    "action": "ReverseGear",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
