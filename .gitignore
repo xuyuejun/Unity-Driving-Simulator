@@ -74,3 +74,7 @@ crashlytics-build.properties
 
 /[Aa]ssets/Enviro - Sky and Weather.meta
 /[Aa]ssets/Enviro - Sky and Weather/*
+
+# Ignore Lighting Data
+/[Aa]ssets/LightingData.meta
+/[Aa]ssets/LightingData/*
