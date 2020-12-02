@@ -164,8 +164,8 @@
                 },
                 {
                     "name": "",
-                    "id": "f1ab00f0-8e54-4918-b86d-4e228c4ddf40",
-                    "path": "<HID::DragonRise Inc.   Generic   USB  Joystick  >/stick/down",
+                    "id": "b1c8ac98-f420-4449-b86b-b95ec78c2201",
+                    "path": "<HID::DragonRise Inc.   Generic   USB  Joystick  >/trigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -221,6 +221,17 @@
                     "name": "",
                     "id": "2e7579bd-d519-4768-872d-55ca7637eb3e",
                     "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BrakePedal",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0a5f8c73-bf16-401b-8df6-9699daaa6e7c",
+                    "path": "<HID::DragonRise Inc.   Generic   USB  Joystick  >/stick/down",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
