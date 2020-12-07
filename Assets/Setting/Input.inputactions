@@ -355,6 +355,33 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "MiniMap",
+            "id": "f0d0ead4-e300-4107-99ac-b0156601d78e",
+            "actions": [
+                {
+                    "name": "ZoomChange",
+                    "type": "Button",
+                    "id": "dd0e67b1-2b4a-4962-9a81-022cbb46f306",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "a9e3f66b-fe3e-4bd1-a43d-03b51d3f8a6b",
+                    "path": "<Keyboard>/n",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ZoomChange",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []
