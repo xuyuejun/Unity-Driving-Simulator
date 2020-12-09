@@ -16,7 +16,7 @@ public class LightsGroup : MonoBehaviour
     public bool onHeadlight;
     void Update()
     {
-        onBrake = car.handBrakeInput;
+        onBrake = car.brakeInput > 0?true:false;
         onHeadlight = car.HeadLight;
 
         if (onBrake)

@@ -47,24 +47,38 @@ public class CarController : MonoBehaviour
     public float horizontalInput;
     public float acceleratorInput;
     public float brakeInput;
-    public bool handBrakeInput;
     public bool HeadLight;
     [Header("Debugger")]
     public float[] slip = new float[4];
 
     // 输入控制
+    void OnSimpleDriving(InputValue value)
+    {
+        Vector2 ArrowKeysInput = value.Get<Vector2>();
+        horizontalInput = ArrowKeysInput.x;
+        if (ArrowKeysInput.y >= 0)
+        {
+            acceleratorInput = ArrowKeysInput.y;
+            brakeInput = 0;
+        }
+        else
+        {
+            brakeInput = - ArrowKeysInput.y;
+            acceleratorInput = 0;
+        }
+    }
     void OnDirection(InputValue value)
     {
         Vector2 directionInput = value.Get<Vector2>();
-        horizontalInput = directionInput.x;
+        horizontalInput = directionInput.x * 1.4f;
     }
     void OnAcceleratorPedal(InputValue value)
     {
-        acceleratorInput = value.Get<float>();
+        acceleratorInput = (1 - value.Get<float>()) / 2;
     }
     void OnBrakePedal(InputValue value)
     {
-        brakeInput = value.Get<float>();
+        brakeInput = (1 - value.Get<float>()) / 2;
     }
     void OnReverseGear()
     {
