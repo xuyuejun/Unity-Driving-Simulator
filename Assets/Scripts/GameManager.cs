@@ -34,10 +34,12 @@ public class GameManager : MonoBehaviour
     void OnGameStart()
     {
         print("游戏开始");
+        GameInProgress = true;
     }
     void OnGameEnd()
     {
         print("游戏结束");
+        GameInProgress = false;
     }
     void getData()
     {
