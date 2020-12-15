@@ -20,11 +20,26 @@ public class GameManager : MonoBehaviour
     public float GearNum;
     [Header("Main Camera Status")]
     public int cameraStatus;
+    [Header("Check Point Status")]
+    public bool GameInProgress;
     void Start()
     {
 
     }
     void FixedUpdate()
+    {
+        getData();
+        // debug();
+    }
+    void OnGameStart()
+    {
+        print("游戏开始");
+    }
+    void OnGameEnd()
+    {
+        print("游戏结束");
+    }
+    void getData()
     {
         CarSpeed = car.CarSpeed;
         GearNum = car.GearNum;
@@ -33,9 +48,6 @@ public class GameManager : MonoBehaviour
         Xcoordinate = car.transform.position.x + 600;
         Ycoordinate = car.transform.position.z + 400;
         Altitude = car.transform.position.y - 270;
-
-        debug();
-        // OnGUI();
     }
     void debug()
     {
