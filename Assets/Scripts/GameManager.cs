@@ -21,16 +21,23 @@ public class GameManager : MonoBehaviour
     [Header("Main Camera Status")]
     public int cameraStatus;
     [Header("Check Point Status")]
-    public bool GameInProgress;
+    public bool GameInProgress = false;
+    [Header("Camera and Canvas status")]
+    public bool FirstPersonView;
+    public GameObject recObject;
+    public GameObject DashBoard;
+    public GameObject MiniMap;
     void Start()
     {
 
     }
     void FixedUpdate()
     {
+        UpdateMainCanvas();
         getData();
         // debug();
     }
+
     void OnGameStart()
     {
         print("游戏开始");
@@ -41,6 +48,12 @@ public class GameManager : MonoBehaviour
         print("游戏结束");
         GameInProgress = false;
     }
+    void UpdateMainCanvas()
+    {
+        recObject.SetActive(GameInProgress);
+        DashBoard.SetActive(!FirstPersonView);
+        MiniMap.SetActive(!FirstPersonView);
+    }
     void getData()
     {
         CarSpeed = car.CarSpeed;
@@ -50,6 +63,8 @@ public class GameManager : MonoBehaviour
         Xcoordinate = car.transform.position.x + 600;
         Ycoordinate = car.transform.position.z + 400;
         Altitude = car.transform.position.y - 270;
+
+        FirstPersonView = mainCamera.ShowingFirstPersonView;
     }
     void debug()
     {
