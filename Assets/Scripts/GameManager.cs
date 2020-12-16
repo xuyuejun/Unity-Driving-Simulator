@@ -20,6 +20,20 @@ public class GameManager : MonoBehaviour
         public float horizontalInput;
         public float acceleratorInput;
         public float brakeInput;
+        public RacingData(int Index, float Time, float CarSpeed, float EngineRPM, int GearNum, float LocationX, float LocationY, float Altitude, float HorizontalInput, float AcceleratorInput, float BrakeInput)
+        {
+            this.index = Index;
+            this.time = Time;
+            this.carSpeed = CarSpeed;
+            this.engineRPM = EngineRPM;
+            this.gearNum = GearNum;
+            this.locationX = LocationX;
+            this.locationY = LocationY;
+            this.altitude = Altitude;
+            this.horizontalInput = HorizontalInput;
+            this.acceleratorInput = AcceleratorInput;
+            this.brakeInput = BrakeInput;
+        }
     }
     [System.Serializable]
     public class Player
@@ -43,7 +57,11 @@ public class GameManager : MonoBehaviour
     public float CarSpeed;
     public float engineRPM;
     public bool isBrake;
-    public float GearNum;
+    public int GearNum;
+    [Header("Car Status")]
+    public float horizontalInput;
+    public float acceleratorInput;
+    public float brakeInput;
     [Header("Main Camera Status")]
     public int cameraStatus;
     [Header("Check Point Status")]
@@ -55,12 +73,31 @@ public class GameManager : MonoBehaviour
     public GameObject MiniMap;
     [Header("Json Data")]
     public Player playerData;
+    public float waitTime = 10;
+    private int elapseTime = 0;
+    public int index = 0;
     void Start()
     {
-        
+
     }
+
+    void Update()
+    {
+
+    }
+
     void FixedUpdate()
     {
+        if (GameInProgress)
+        {
+            elapseTime++;
+            if (elapseTime >= waitTime)
+            {
+                playerData.RacingDatas.Add(new RacingData(index, index / 100,CarSpeed,engineRPM,GearNum,Xcoordinate,Ycoordinate,Altitude,horizontalInput,acceleratorInput,brakeInput));
+                index++;
+                elapseTime = 0;
+            }
+        }
         UpdateMainCanvas();
         getData();
     }
@@ -68,6 +105,7 @@ public class GameManager : MonoBehaviour
     void OnGameStart()
     {
         print("游戏开始");
+        playerData.date = System.DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ");
         GameInProgress = true;
     }
     void OnGameEnd()
@@ -91,6 +129,10 @@ public class GameManager : MonoBehaviour
         Ycoordinate = car.transform.position.z + 400;
         Altitude = car.transform.position.y - 270;
 
+        horizontalInput = car.horizontalInput;
+        acceleratorInput = car.acceleratorInput;
+        brakeInput = car.brakeInput;
+
         FirstPersonView = mainCamera.ShowingFirstPersonView;
     }
     void OnGUI()
@@ -102,6 +144,7 @@ public class GameManager : MonoBehaviour
         GUILayout.Label("Xcoordinate: " + Xcoordinate);
         GUILayout.Label("Ycoordinate: " + Ycoordinate);
         GUILayout.Label("Altitude" + Altitude);
+        GUILayout.Label("index" + index);
     }
 
 }
