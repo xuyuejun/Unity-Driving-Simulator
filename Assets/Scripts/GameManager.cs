@@ -6,6 +6,32 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    [System.Serializable]
+    public class RacingData
+    {
+        public int index;
+        public float time;
+        public float carSpeed;
+        public float engineRPM;
+        public int gearNum;
+        public float locationX;
+        public float locationY;
+        public float altitude;
+        public float horizontalInput;
+        public float acceleratorInput;
+        public float brakeInput;
+    }
+    [System.Serializable]
+    public class Player
+    {
+        public string name;
+        public string EnglishName;
+        public int drivingExperience;
+        public string date;
+        public string displayType;
+        public float waitTime;
+        public List<RacingData> RacingDatas;
+    }
     [Header("Input")]
     public CarController car;
     public CameraController mainCamera;
@@ -27,15 +53,16 @@ public class GameManager : MonoBehaviour
     public GameObject recObject;
     public GameObject DashBoard;
     public GameObject MiniMap;
+    [Header("Json Data")]
+    public Player playerData;
     void Start()
     {
-
+        
     }
     void FixedUpdate()
     {
         UpdateMainCanvas();
         getData();
-        // debug();
     }
 
     void OnGameStart()
@@ -66,11 +93,6 @@ public class GameManager : MonoBehaviour
 
         FirstPersonView = mainCamera.ShowingFirstPersonView;
     }
-    void debug()
-    {
-        Debug.Log("Test");
-    }
-
     void OnGUI()
     {
         GUILayout.Label("CarSpeed: " + CarSpeed);
