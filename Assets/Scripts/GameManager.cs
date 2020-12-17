@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.IO;
 
 public class GameManager : MonoBehaviour
 {
@@ -74,6 +75,7 @@ public class GameManager : MonoBehaviour
     [Header("Json Data")]
     public Player playerData;
     public float waitTime = 10;
+    public float currentTime = 0;
     private int elapseTime = 0;
     public int index = 0;
     void Start()
@@ -93,8 +95,9 @@ public class GameManager : MonoBehaviour
             elapseTime++;
             if (elapseTime >= waitTime)
             {
-                playerData.RacingDatas.Add(new RacingData(index, index / 100,CarSpeed,engineRPM,GearNum,Xcoordinate,Ycoordinate,Altitude,horizontalInput,acceleratorInput,brakeInput));
+                playerData.RacingDatas.Add(new RacingData(index, currentTime, CarSpeed, engineRPM, GearNum, Xcoordinate, Ycoordinate, Altitude, horizontalInput, acceleratorInput, brakeInput));
                 index++;
+                currentTime = currentTime + 0.1f;
                 elapseTime = 0;
             }
         }
@@ -105,12 +108,14 @@ public class GameManager : MonoBehaviour
     void OnGameStart()
     {
         print("游戏开始");
-        playerData.date = System.DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ");
+        playerData.date = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         GameInProgress = true;
     }
     void OnGameEnd()
     {
         print("游戏结束");
+        string json = JsonUtility.ToJson(playerData);
+        WriteToFile(System.DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss"), json);
         GameInProgress = false;
     }
     void UpdateMainCanvas()
@@ -118,6 +123,20 @@ public class GameManager : MonoBehaviour
         recObject.SetActive(GameInProgress);
         DashBoard.SetActive(!FirstPersonView);
         MiniMap.SetActive(!FirstPersonView);
+    }
+    private void WriteToFile(string fileName, string json)
+    {
+        string path = GetFilePath(fileName);
+        FileStream fileStream = new FileStream(path, FileMode.Create);
+
+        using (StreamWriter writer = new StreamWriter(fileStream))
+        {
+            writer.Write(json);
+        }
+    }
+    private string GetFilePath(string fileName)
+    {
+        return Application.persistentDataPath + "/PlayerData/" + fileName + ".json";
     }
     void getData()
     {
