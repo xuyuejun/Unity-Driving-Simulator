@@ -11,29 +11,29 @@ public class GameManager : MonoBehaviour
     public class RacingData
     {
         public int index;
-        public float time;
-        public float carSpeed;
-        public float engineRPM;
+        public double time;
+        public double carSpeed;
+        public double engineRPM;
         public int gearNum;
-        public float locationX;
-        public float locationY;
-        public float altitude;
-        public float horizontalInput;
-        public float acceleratorInput;
-        public float brakeInput;
+        public double locationX;
+        public double locationY;
+        public double altitude;
+        public double horizontalInput;
+        public double acceleratorInput;
+        public double brakeInput;
         public RacingData(int Index, float Time, float CarSpeed, float EngineRPM, int GearNum, float LocationX, float LocationY, float Altitude, float HorizontalInput, float AcceleratorInput, float BrakeInput)
         {
             this.index = Index;
-            this.time = Time;
-            this.carSpeed = CarSpeed;
-            this.engineRPM = EngineRPM;
+            this.time = double.Parse(Time.ToString("#0.00"));
+            this.carSpeed = double.Parse(CarSpeed.ToString("#0.00"));
+            this.engineRPM = double.Parse(EngineRPM.ToString("#0.00"));
             this.gearNum = GearNum;
-            this.locationX = LocationX;
-            this.locationY = LocationY;
-            this.altitude = Altitude;
-            this.horizontalInput = HorizontalInput;
-            this.acceleratorInput = AcceleratorInput;
-            this.brakeInput = BrakeInput;
+            this.locationX = double.Parse(LocationX.ToString("#0.00"));
+            this.locationY = double.Parse(LocationY.ToString("#0.00"));
+            this.altitude = double.Parse(Altitude.ToString("#0.00"));
+            this.horizontalInput = double.Parse(HorizontalInput.ToString("#0.00"));
+            this.acceleratorInput = double.Parse(AcceleratorInput.ToString("#0.00"));
+            this.brakeInput = double.Parse(BrakeInput.ToString("#0.00"));
         }
     }
     [System.Serializable]
