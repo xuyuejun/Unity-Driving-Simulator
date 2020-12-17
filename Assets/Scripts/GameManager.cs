@@ -74,20 +74,16 @@ public class GameManager : MonoBehaviour
     public GameObject MiniMap;
     [Header("Json Data")]
     public Player playerData;
+    public string PlayerFile = "PlayerInformation.json";
     public float waitTime = 10;
     public float currentTime = 0;
     private int elapseTime = 0;
     public int index = 0;
     void Start()
     {
-
+        string PlayerJson = ReadFromFile(PlayerFile);
+        JsonUtility.FromJsonOverwrite(PlayerJson, playerData);
     }
-
-    void Update()
-    {
-
-    }
-
     void FixedUpdate()
     {
         if (GameInProgress)
@@ -107,13 +103,11 @@ public class GameManager : MonoBehaviour
 
     void OnGameStart()
     {
-        print("游戏开始");
         playerData.date = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         GameInProgress = true;
     }
     void OnGameEnd()
     {
-        print("游戏结束");
         string json = JsonUtility.ToJson(playerData);
         WriteToFile(System.DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss"), json);
         GameInProgress = false;
@@ -137,6 +131,27 @@ public class GameManager : MonoBehaviour
     private string GetFilePath(string fileName)
     {
         return Application.persistentDataPath + "/PlayerData/" + fileName + ".json";
+    }
+    private string GetSettingFilePath(string fileName)
+    {
+        return Application.persistentDataPath + "/" + fileName;
+    }
+    private string ReadFromFile(string fileName)
+    {
+        string path = GetSettingFilePath(fileName);
+        if (File.Exists(path))
+        {
+            using (StreamReader reader = new StreamReader(path))
+            {
+                string json = reader.ReadToEnd();
+                return json;
+            }
+        }
+        else
+        {
+            Debug.LogWarning("File not found!");
+        }
+        return "";
     }
     void getData()
     {
@@ -162,8 +177,12 @@ public class GameManager : MonoBehaviour
 
         GUILayout.Label("Xcoordinate: " + Xcoordinate);
         GUILayout.Label("Ycoordinate: " + Ycoordinate);
-        GUILayout.Label("Altitude" + Altitude);
-        GUILayout.Label("index" + index);
+        GUILayout.Label("Altitude: " + Altitude);
+        GUILayout.Label("index: " + index);
+
+        GUILayout.Label("Name: " + playerData.name);
+        GUILayout.Label("English Name: " + playerData.EnglishName);
+        GUILayout.Label("Driving Experience" + playerData.drivingExperience);
     }
 
 }
