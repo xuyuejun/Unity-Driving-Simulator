@@ -5,31 +5,29 @@ using UnityEngine;
 
 public class WaypointProgressTracker : MonoBehaviour
 {
-    [SerializeField] private WaypointCircuit circuit; // A reference to the waypoint-based route we should follow
+    [SerializeField] private WaypointCircuit circuit;
     public WaypointCircuit.RoutePoint progressPoint { get; private set; }
-
+    public Rigidbody body;
+    public float CarSpeed;
     public Transform target;
     public Vector3 progressDelta;
+    public float Distance; 
 
-    public float progressDistance; // The progress round the route, used in smooth mode.
-    public int progressNum; // the current waypoint number, used in point-to-point mode.
+    public float progressDistance;
     private void FixedUpdate()
     {
+        CarSpeed = body.velocity.magnitude;
         target.position = circuit.GetRoutePoint(progressDistance).position;
         target.rotation = Quaternion.LookRotation(circuit.GetRoutePoint(progressDistance).direction);
 
         progressPoint = circuit.GetRoutePoint(progressDistance);
         progressDelta = progressPoint.position - transform.position;
 
-        // Debug.Log(progressPoint.position);
-        // Debug.Log(Vector3.Dot(progressDelta, progressPoint.direction));
-
         if (Vector3.Dot(progressDelta, progressPoint.direction) < 0)
         {
-            Debug.Log(progressDelta.magnitude);
-            progressDistance += progressDelta.magnitude * 0.2f;
+            Distance = progressDelta.magnitude;
+            progressDistance += progressDelta.magnitude * CarSpeed * 0.01f;
         }
-
     }
 
 
