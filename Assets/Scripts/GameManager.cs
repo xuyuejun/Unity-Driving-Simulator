@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
         public RacingData(int Index, float Time, float CarSpeed, float EngineRPM, int GearNum, float LocationX, float LocationY, float Altitude, float CenterlineDistance, float HorizontalInput, float AcceleratorInput, float BrakeInput)
         {
             this.index = Index;
-            this.time = double.Parse(Time.ToString("#0.00"));
+            this.time = double.Parse(Time.ToString("#0.0"));
             this.carSpeed = double.Parse(CarSpeed.ToString("#0.00"));
             this.engineRPM = double.Parse(EngineRPM.ToString("#0.00"));
             this.gearNum = GearNum;
