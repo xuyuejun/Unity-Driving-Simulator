@@ -18,10 +18,11 @@ public class GameManager : MonoBehaviour
         public double locationX;
         public double locationY;
         public double altitude;
+        public double centerlineDistance;
         public double horizontalInput;
         public double acceleratorInput;
         public double brakeInput;
-        public RacingData(int Index, float Time, float CarSpeed, float EngineRPM, int GearNum, float LocationX, float LocationY, float Altitude, float HorizontalInput, float AcceleratorInput, float BrakeInput)
+        public RacingData(int Index, float Time, float CarSpeed, float EngineRPM, int GearNum, float LocationX, float LocationY, float Altitude, float CenterlineDistance, float HorizontalInput, float AcceleratorInput, float BrakeInput)
         {
             this.index = Index;
             this.time = double.Parse(Time.ToString("#0.00"));
@@ -31,6 +32,7 @@ public class GameManager : MonoBehaviour
             this.locationX = double.Parse(LocationX.ToString("#0.00"));
             this.locationY = double.Parse(LocationY.ToString("#0.00"));
             this.altitude = double.Parse(Altitude.ToString("#0.00"));
+            this.centerlineDistance = double.Parse(CenterlineDistance.ToString("#0.00"));
             this.horizontalInput = double.Parse(HorizontalInput.ToString("#0.00"));
             this.acceleratorInput = double.Parse(AcceleratorInput.ToString("#0.00"));
             this.brakeInput = double.Parse(BrakeInput.ToString("#0.00"));
@@ -50,10 +52,12 @@ public class GameManager : MonoBehaviour
     [Header("Input")]
     public CarController car;
     public CameraController mainCamera;
+    public WaypointProgressTracker Tracker;
     [Header("Location Status")]
     public float Xcoordinate;
     public float Ycoordinate;
     public float Altitude;
+    public float CenterlineDistance;
     [Header("Car Status")]
     public float CarSpeed;
     public float engineRPM;
@@ -91,7 +95,7 @@ public class GameManager : MonoBehaviour
             elapseTime++;
             if (elapseTime >= waitTime)
             {
-                playerData.RacingDatas.Add(new RacingData(index, currentTime, CarSpeed, engineRPM, GearNum, Xcoordinate, Ycoordinate, Altitude, horizontalInput, acceleratorInput, brakeInput));
+                playerData.RacingDatas.Add(new RacingData(index, currentTime, CarSpeed, engineRPM, GearNum, Xcoordinate, Ycoordinate, Altitude, CenterlineDistance, horizontalInput, acceleratorInput, brakeInput));
                 index++;
                 currentTime = currentTime + 0.1f;
                 elapseTime = 0;
@@ -163,6 +167,8 @@ public class GameManager : MonoBehaviour
         Ycoordinate = car.transform.position.z + 400;
         Altitude = car.transform.position.y - 270;
 
+        CenterlineDistance = Tracker.Distance;
+
         horizontalInput = car.horizontalInput;
         acceleratorInput = car.acceleratorInput;
         brakeInput = car.brakeInput;
@@ -178,6 +184,7 @@ public class GameManager : MonoBehaviour
         GUILayout.Label("Xcoordinate: " + Xcoordinate);
         GUILayout.Label("Ycoordinate: " + Ycoordinate);
         GUILayout.Label("Altitude: " + Altitude);
+        GUILayout.Label("CenterlineDistance: " + CenterlineDistance);
         GUILayout.Label("index: " + index);
 
         GUILayout.Label("Name: " + playerData.name);
