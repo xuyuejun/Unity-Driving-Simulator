@@ -25,8 +25,8 @@ public class WaypointProgressTracker : MonoBehaviour
 
         if (Vector3.Dot(progressDelta, progressPoint.direction) < 0)
         {
-            Distance = progressDelta.magnitude;
             progressDistance += progressDelta.magnitude * CarSpeed * 0.01f;
+            Distance = progressDelta.magnitude + Vector3.Dot(progressDelta, progressPoint.direction);
         }
     }
 
