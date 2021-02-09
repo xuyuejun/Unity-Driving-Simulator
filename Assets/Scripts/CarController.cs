@@ -19,7 +19,6 @@ public class CarController : MonoBehaviour
     public int GearNum = 0;
     public float CarSpeed;
     public float engineRPM;
-    public bool ReserverGear = false;
     [Header("settings")]
     public float maxAngle = 30f;              // 最大角度
     public float brakeTorque = 30000f;        // 刹车动力
@@ -63,7 +62,7 @@ public class CarController : MonoBehaviour
         }
         else
         {
-            brakeInput = - ArrowKeysInput.y;
+            brakeInput = -ArrowKeysInput.y;
             acceleratorInput = 0;
         }
     }
@@ -80,18 +79,13 @@ public class CarController : MonoBehaviour
     {
         brakeInput = (1 - value.Get<float>()) / 2;
     }
+    void OnDriveGear()
+    {
+        GearNum = 1;
+    }
     void OnReverseGear()
     {
-        if (ReserverGear)
-        {
-            ReserverGear = !ReserverGear;
-            GearNum = 0;
-        }
-        else
-        {
-            ReserverGear = !ReserverGear;
-            GearNum = 1;
-        }
+        GearNum = 0;
     }
     void OnHeadLight()
     {

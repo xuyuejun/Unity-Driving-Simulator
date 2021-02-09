@@ -30,14 +30,6 @@
                     "interactions": ""
                 },
                 {
-                    "name": "ReverseGear",
-                    "type": "Button",
-                    "id": "154ea3ea-c598-4326-9ea2-df1a9b52d357",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": ""
-                },
-                {
                     "name": "BrakePedal",
                     "type": "PassThrough",
                     "id": "4a29d291-c8fa-4790-8f0f-42ca77662959",
@@ -68,6 +60,22 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "ReverseGear",
+                    "type": "Button",
+                    "id": "154ea3ea-c598-4326-9ea2-df1a9b52d357",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "DriveGear",
+                    "type": "Button",
+                    "id": "3a59fa8b-2862-4221-aac3-6976b1996405",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -79,39 +87,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Direction",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "af23253b-6fc3-451c-9091-d35d31d611bd",
-                    "path": "<XInputController>/buttonWest",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "ReverseGear",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "ba4ee142-7577-4c4c-b087-02108f03fb4f",
-                    "path": "<Keyboard>/x",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "ReverseGear",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "b1c8ac98-f420-4449-b86b-b95ec78c2201",
-                    "path": "<HID::Logitech G29 Driving Force Racing Wheel>/stick/down",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "ReverseGear",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -184,7 +159,7 @@
                 {
                     "name": "",
                     "id": "4bd35176-3168-4208-ad32-cd65877a1c0a",
-                    "path": "<HID::Logitech G29 Driving Force Racing Wheel>/button11",
+                    "path": "<HID::Logitech G29 Driving Force Racing Wheel>/button12",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -290,6 +265,50 @@
                     "action": "SimpleDriving",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "ba4ee142-7577-4c4c-b087-02108f03fb4f",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ReverseGear",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b1c8ac98-f420-4449-b86b-b95ec78c2201",
+                    "path": "<HID::Logitech G29 Driving Force Racing Wheel>/button16",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ReverseGear",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e4ba5dca-c024-48a7-b64b-68a26d7feaf9",
+                    "path": "<HID::Logitech G29 Driving Force Racing Wheel>/button15",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DriveGear",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f8fff243-65c7-46b5-87e2-75c68155ac67",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DriveGear",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
