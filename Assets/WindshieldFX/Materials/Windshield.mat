@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Windshield
+  m_Shader: {fileID: 4800000, guid: dcf67055e4c0882449e1179ac31374b7, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BumpMap:
+        m_Texture: {fileID: 2800000, guid: 59a37c2559d561344aa606174d3b15f2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _HiResRT:
+        m_Texture: {fileID: 8400000, guid: bf167d543717b9e48976cfeda4181ac8, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _LowResRT:
+        m_Texture: {fileID: 8400000, guid: 3449fc870992842458e183510d0f506b, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTXT:
+        m_Texture: {fileID: 2800000, guid: cf7a20bd6619f924db7e1420b2c704fc, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 95139aac68d87d642b6a9bcf88229df7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MaskL:
+        m_Texture: {fileID: 2800000, guid: 5d157cee264f4de46942bdfa9a62feeb, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MaskR:
+        m_Texture: {fileID: 2800000, guid: f2e4a740cb0bb244abad89c7503f9793, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _WiperL:
+        m_Texture: {fileID: 2800000, guid: 81da4af0aa52db44ebb46e0c5161983a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _WiperR:
+        m_Texture: {fileID: 2800000, guid: 81da4af0aa52db44ebb46e0c5161983a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _Cutoff: 0.5
+    - _DirtIntensity: 0.64
+    - _DynamicWaterStrength: 0.4
+    - _Gloss: 0.99
+    - _MaskLX: 0
+    - _MaskLY: 0
+    - _MaskRX: 0
+    - _MaskRY: 0
+    - _OpacityFromTXT: 0
+    - _RainIntensity: -0.28
+    - _Specularity: 0.001
+    - _WiperFXStrength: 1
+    - _WiperLAngel: 1.18
+    - _WiperLX: -0.04
+    - _WiperLY: 0.56
+    - _WiperRAngel: 1.15
+    - _WiperRX: -0.43
+    - _WiperRY: 0.37
+    - _WiperStrength: 1
+    m_Colors:
+    - _DirtColor: {r: 0, g: 0, b: 0, a: 0}
+    - _SampleDistance: {r: 254, g: 254, b: 0, a: 0}
+    - _WinClean: {r: 0, g: 0, b: 0, a: 0}
+    - _settings: {r: 6, g: 6, b: 0.3, a: 0}
