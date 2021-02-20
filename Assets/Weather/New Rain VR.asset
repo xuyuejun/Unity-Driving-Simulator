@@ -17,23 +17,23 @@ MonoBehaviour:
   Spring: 1
   possibiltyInSpring: 100
   Summer: 1
-  possibiltyInSummer: 52
+  possibiltyInSummer: 100
   Autumn: 1
   possibiltyInAutumn: 100
-  winter: 0
+  winter: 1
   possibiltyInWinter: 100
   cloudsConfig:
-    ambientSkyColorIntensity: 1.25
-    scatteringCoef: 0.5
-    edgeDarkness: 0.724
+    ambientSkyColorIntensity: 1.26
+    scatteringCoef: 0.853
+    edgeDarkness: 0.75
     baseErosionIntensity: 0
     detailErosionIntensity: 0.486
     density: 4
     lightStepModifier: 0.7
     lightVariance: 0
-    coverage: 0.768
+    coverage: 0.399
     lightAbsorbtion: 0
-    coverageType: 0
+    coverageType: 0.13
     raymarchingScale: 1
     cloudType: 1
     cirrusAlpha: 0
@@ -52,9 +52,9 @@ MonoBehaviour:
     particleLayer2Brightness: 0.542
     particleLayer2ColorPow: 2
     particleCloudsOverwrite: 0
-  fogStartDistance: 0
-  fogDistance: 0
-  fogDensity: 0.0003
+  fogStartDistance: 1
+  fogDistance: 1000
+  fogDensity: 100
   weatherSkyMod:
     serializedVersion: 2
     key0: {r: 0, g: 0, b: 0, a: 0}
@@ -144,8 +144,8 @@ MonoBehaviour:
     m_NumAlphaKeys: 4
   volumeLightIntensity: 0.5
   shadowIntensityMod: 0
-  heightFogDensity: 1.95
-  SkyFogHeight: 0.56
+  heightFogDensity: 1.58
+  SkyFogHeight: 1.48
   skyFogStart: 0
   SkyFogIntensity: 1
   FogScatteringIntensity: 1
@@ -171,6 +171,6 @@ MonoBehaviour:
   AutumnNightAmbient: {fileID: 0}
   WinterDayAmbient: {fileID: 0}
   WinterNightAmbient: {fileID: 0}
-  blurDistance: 100
-  blurIntensity: 1
-  blurSkyIntensity: 1
+  blurDistance: 40
+  blurIntensity: 0.7
+  blurSkyIntensity: 5
