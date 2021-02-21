@@ -5,10 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using System.IO;
-//using UnityStandardAssets.ImageEffects;
-/// <summary>
-///  Copyright (c) 2016 Eric Zhu 
-/// </summary>
+
 namespace GreatArcStudios
 {
     public class PauseManager : MonoBehaviour
@@ -604,7 +601,6 @@ namespace GreatArcStudios
             vsyncINI = QualitySettings.vSyncCount;
             isFullscreen = Screen.fullScreen;
             saveSettings.SaveGameSettings();
-
         }
         /// <summary>
         /// Video Options
@@ -685,47 +681,24 @@ namespace GreatArcStudios
         {
             if (msaaAmount == 0)
             {
-                disableMSAA();
+                // disableMSAA
+                QualitySettings.antiAliasing = 0;
             }
             else if (msaaAmount == 1)
             {
-                twoMSAA();
+                // twoMSAA
+                QualitySettings.antiAliasing = 2;
             }
             else if (msaaAmount == 2)
             {
-                fourMSAA();
+                // fourMSAA
+                QualitySettings.antiAliasing = 4;
             }
             else if (msaaAmount == 3)
             {
-                eightMSAA();
+                // eightMSAA()
+                QualitySettings.antiAliasing = 8;
             }
-        }
-
-        /// Set MSAA (disabling it) using quality settings
-        public void disableMSAA()
-        {
-
-            QualitySettings.antiAliasing = 0;
-            // aaOption.text = "MSAA: " + QualitySettings.antiAliasing.ToString();
-        }
-        public void twoMSAA()
-        {
-
-            QualitySettings.antiAliasing = 2;
-            // aaOption.text = "MSAA: " + QualitySettings.antiAliasing.ToString();
-        }
-        public void fourMSAA()
-        {
-
-            QualitySettings.antiAliasing = 4;
-
-            // aaOption.text = "MSAA: " + QualitySettings.antiAliasing.ToString();
-        }
-        public void eightMSAA()
-        {
-
-            QualitySettings.antiAliasing = 8;
-            // aaOption.text = "MSAA: " + QualitySettings.antiAliasing.ToString();
         }
 
         public void nextPreset()
