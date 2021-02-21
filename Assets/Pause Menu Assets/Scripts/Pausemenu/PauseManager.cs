@@ -20,7 +20,15 @@ namespace GreatArcStudios
         public GameObject mainPanel;
         public GameObject vidPanel;
         public GameObject audioPanel;
-        [Header("Other")]
+        [Header("Video Setting")]
+        public Text presetLabel;
+        public Toggle vSyncToggle;
+        public Slider fovSlider;
+        public Text resolutionLabel;
+        public Toggle fullscreenToggle;
+        public Dropdown aaCombo;
+
+        [Header("Others")]
         /// <summary>
         /// These are the game objects with the title texts like "Pause menu" and "Game Title" 
         /// </summary>
@@ -79,9 +87,7 @@ namespace GreatArcStudios
         /// Timescale value. The defualt is 1 for most games. You may want to change it if you are pausing the game in a slow motion situation 
         /// </summary> 
         public float timeScale = 1f;
-        /// <summary>
-        /// One terrain variable used if you have a terrain plugin like rtp. 
-        /// </summary>
+
         public Terrain terrain;
         /// <summary>
         /// Other terrain variable used if you want to have an option to target low end harware.
@@ -127,39 +133,18 @@ namespace GreatArcStudios
         /// </code>
         /// </summary>
         internal static int vsyncINI;
-        /// <summary>
-        /// AA drop down menu.
-        /// </summary>
-        public Dropdown aaCombo;
-        /// <summary>
-        /// Aniso drop down menu.
-        /// </summary>
-        public Dropdown afCombo;
 
-        public Slider fovSlider;
-        public Slider modelQualSlider;
-        public Slider terrainQualSlider;
-        public Slider highQualTreeSlider;
-        public Slider renderDistSlider;
-        public Slider terrainDensitySlider;
-        public Slider shadowDistSlider;
+
+
+
+
         public Slider audioMasterSlider;
         public Slider audioMusicSlider;
         public Slider audioEffectsSlider;
         public Slider masterTexSlider;
         public Slider shadowCascadesSlider;
-        public Toggle vSyncToggle;
         public Toggle aoToggle;
         public Toggle dofToggle;
-        public Toggle fullscreenToggle;
-        /// <summary>
-        /// The preset text label.
-        /// </summary>
-        public Text presetLabel;
-        /// <summary>
-        /// Resolution text label.
-        /// </summary>
-        public Text resolutionLabel;
         /// <summary>
         /// Lod bias float array. You should manually assign these based on the quality level.
         /// </summary>
@@ -268,9 +253,6 @@ namespace GreatArcStudios
             //Debug.Log("ini res" + currentRes);
             resolutionLabel.text = Screen.currentResolution.width.ToString() + " x " + Screen.currentResolution.height.ToString();
             isFullscreen = Screen.fullScreen;
-            //get initial screen effect bools
-            lastAOBool = aoToggle.isOn;
-            lastDOFBool = dofToggle.isOn;
             //get all specified audio source volumes
             _beforeEffectVol = new float[_audioEffectAmt];
             beforeMaster = AudioListener.volume;
@@ -576,8 +558,24 @@ namespace GreatArcStudios
         /// </summary>
         public void videoIn()
         {
-            uiEventSystem.SetSelectedGameObject(defualtSelectedVideo);
 
+            // uiEventSystem.SetSelectedGameObject(defualtSelectedVideo);
+            // Presets
+            presetLabel.text = presets[QualitySettings.GetQualityLevel()].ToString();
+            // VSync
+            if (QualitySettings.vSyncCount == 0)
+            {
+                vSyncToggle.isOn = false;
+            }
+            else if (QualitySettings.vSyncCount == 1)
+            {
+                vSyncToggle.isOn = true;
+            }
+            // Field of View
+            fovSlider.value = mainCam.fieldOfView;
+            // Fullscreen
+            fullscreenToggle.isOn = Screen.fullScreen;
+            // MSAA
             if (QualitySettings.antiAliasing == 0)
             {
                 aaCombo.value = 0;
@@ -594,70 +592,16 @@ namespace GreatArcStudios
             {
                 aaCombo.value = 3;
             }
-            if (QualitySettings.anisotropicFiltering == AnisotropicFiltering.ForceEnable)
-            {
-                afCombo.value = 1;
-            }
-            else if (QualitySettings.anisotropicFiltering == AnisotropicFiltering.Disable)
-            {
-                afCombo.value = 0;
-            }
-            else if (QualitySettings.anisotropicFiltering == AnisotropicFiltering.Enable)
-            {
-                afCombo.value = 2;
-            }
-            presetLabel.text = presets[QualitySettings.GetQualityLevel()].ToString();
-            fovSlider.value = mainCam.fieldOfView;
-            modelQualSlider.value = QualitySettings.lodBias;
-            renderDistSlider.value = mainCam.farClipPlane;
-            shadowDistSlider.value = QualitySettings.shadowDistance;
-            masterTexSlider.value = QualitySettings.masterTextureLimit;
-            shadowCascadesSlider.value = QualitySettings.shadowCascades;
-            fullscreenToggle.isOn = Screen.fullScreen;
-            aoToggle.isOn = aoBool;
-            dofToggle.isOn = dofBool;
-            if (QualitySettings.vSyncCount == 0)
-            {
-                vSyncToggle.isOn = false;
-            }
-            else if (QualitySettings.vSyncCount == 1)
-            {
-                vSyncToggle.isOn = true;
-            }
-            try
-            {
-                if (useSimpleTerrain == true)
-                {
-                    highQualTreeSlider.value = simpleTerrain.treeMaximumFullLODCount;
-                    terrainDensitySlider.value = simpleTerrain.detailObjectDensity;
-                    terrainQualSlider.value = terrain.heightmapMaximumLOD;
-                }
-                else
-                {
-                    highQualTreeSlider.value = terrain.treeMaximumFullLODCount;
-                    terrainDensitySlider.value = terrain.detailObjectDensity;
-                    terrainQualSlider.value = terrain.heightmapMaximumLOD;
-                }
-            }
-            catch
-            {
-                return;
-            }
-
         }
 
-        /// <summary>
         /// Cancel the video setting changes 
-        /// </summary>
         public void cancelVideo()
         {
             uiEventSystem.SetSelectedGameObject(defualtSelectedMain);
             StartCoroutine(cancelVideoMain());
         }
-        /// <summary>
+
         /// Use an IEnumerator to first play the animation and then changethe video settings
-        /// </summary>
-        /// <returns></returns>
         internal IEnumerator cancelVideoMain()
         {
             vidPanelAnimator.Play("Video Panel Out");
@@ -666,7 +610,6 @@ namespace GreatArcStudios
             try
             {
                 mainCam.farClipPlane = renderDistINI;
-                Terrain.activeTerrain.detailObjectDensity = densityINI;
                 mainCam.fieldOfView = fovINI;
                 mainPanel.SetActive(true);
                 vidPanel.SetActive(false);
@@ -684,7 +627,6 @@ namespace GreatArcStudios
             }
             catch
             {
-
                 Debug.Log("A problem occured (chances are the terrain was not assigned )");
                 mainCam.farClipPlane = renderDistINI;
                 mainCam.fieldOfView = fovINI;
@@ -701,7 +643,6 @@ namespace GreatArcStudios
                 QualitySettings.masterTextureLimit = lastTexLimit;
                 QualitySettings.shadowCascades = lastShadowCascade;
                 //Screen.fullScreen = isFullscreen;
-
             }
 
         }
@@ -879,10 +820,8 @@ namespace GreatArcStudios
             catch { Debug.Log("Terrain not assigned"); return; }
 
         }
-        /// <summary>
+
         /// Change the fov using a float. The defualt should be 60.
-        /// </summary>
-        /// <param name="fov"></param>
         public void updateFOV(float fov)
         {
             mainCam.fieldOfView = fov;
@@ -980,9 +919,8 @@ namespace GreatArcStudios
             }
 
         }
-        /// <summary>
-        /// Method for moving to the last resoution in the allRes array. WARNING: This is not finished/buggy.  
-        /// </summary>
+
+
         //Method for moving to the last resoution in the allRes array. WARNING: This is not finished/buggy.  
         public void lastRes()
         {
