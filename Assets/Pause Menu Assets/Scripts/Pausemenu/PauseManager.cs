@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using System.IO;
 //using UnityStandardAssets.ImageEffects;
 /// <summary>
@@ -251,17 +252,6 @@ namespace GreatArcStudios
         /// </summary>
         public void Start()
         {
-
-            readUseSimpleTerrain = useSimpleTerrain;
-            if (useSimpleTerrain)
-            {
-                readSimpleTerrain = simpleTerrain;
-            }
-            else
-            {
-                readTerrain = terrain;
-            }
-
             mainCamShared = mainCam;
             //Set the lastmusicmult and last audiomult
             lastMusicMult = audioMusicSlider.value;
@@ -327,23 +317,19 @@ namespace GreatArcStudios
                 }
             }
         }
-        /// <summary>
+
         /// Restart the level by loading the loaded level.
-        /// </summary>
         public void Restart()
         {
-            Application.LoadLevel(Application.loadedLevel);
-            uiEventSystem.firstSelectedGameObject = defualtSelectedMain;
-
+            SceneManager.LoadScene(0);
+            Time.timeScale = timeScale;
+            // uiEventSystem.firstSelectedGameObject = defualtSelectedMain;
         }
 
-        /// <summary>
         /// Method to resume the game, so disable the pause menu and re-enable all other ui elements
-        /// </summary>
         public void Resume()
         {
             Time.timeScale = timeScale;
-
             mainPanel.SetActive(false);
             vidPanel.SetActive(false);
             audioPanel.SetActive(false);
@@ -354,30 +340,15 @@ namespace GreatArcStudios
                 otherUIElements[i].gameObject.SetActive(true);
             }
         }
-        /// <summary>
+
         /// All the methods relating to qutting should be called here.
-        /// </summary>
         public void quitOptions()
         {
             Application.Quit();
         }
-        public void returnToMenu()
-        {
-            Application.LoadLevel(mainMenu);
-            uiEventSystem.SetSelectedGameObject(defualtSelectedMain);
-        }
-
-        // Update is called once per frame
-        /// <summary>
-        /// The update method. This mainly searches for the user pressing the escape key.
-        /// </summary>
-
 
         public void Update()
         {
-            readUseSimpleTerrain = useSimpleTerrain;
-            useSimpleTerrain = readUseSimpleTerrain;
-            //colorCrossfade();
             if (vidPanel.activeSelf == true)
             {
                 pauseMenu.text = "Video Menu";
@@ -391,7 +362,7 @@ namespace GreatArcStudios
                 pauseMenu.text = "Pause Menu";
             }
 
-            if (Input.GetKeyDown(KeyCode.Escape) && mainPanel.active == false)
+            if (Input.GetKeyDown(KeyCode.Escape) && mainPanel.activeSelf == false)
             {
 
                 uiEventSystem.SetSelectedGameObject(defualtSelectedMain);
@@ -405,12 +376,8 @@ namespace GreatArcStudios
                 {
                     otherUIElements[i].gameObject.SetActive(false);
                 }
-                /* if (blurBool == false)
-                  {
-                     blurEffect.enabled = true;
-                 }  */
             }
-            else if (Input.GetKeyDown(KeyCode.Escape) && mainPanel.active == true)
+            else if (Input.GetKeyDown(KeyCode.Escape) && mainPanel.activeSelf == true)
             {
                 Time.timeScale = timeScale;
                 mainPanel.SetActive(false);
@@ -425,9 +392,7 @@ namespace GreatArcStudios
             }
         }
 
-        /// <summary>
         /// Show the audio panel 
-        /// </summary>
         public void Audio()
         {
             mainPanel.SetActive(false);
@@ -437,9 +402,8 @@ namespace GreatArcStudios
             audioIn();
             pauseMenu.text = "Audio Menu";
         }
-        /// <summary>
+
         /// Play the "audio panel in" animation.
-        /// </summary>
         public void audioIn()
         {
             uiEventSystem.SetSelectedGameObject(defualtSelectedAudio);
