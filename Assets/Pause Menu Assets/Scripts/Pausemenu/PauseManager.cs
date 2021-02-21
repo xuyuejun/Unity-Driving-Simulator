@@ -11,9 +11,6 @@ using System.IO;
 /// </summary>
 namespace GreatArcStudios
 {
-    /// <summary>
-    /// The pause menu manager. You can extend this to make your own. Everything is pretty modular, so creating you own based off of this should be easy. Thanks for downloading and good luck! 
-    /// </summary>
     public class PauseManager : MonoBehaviour
     {
         [Header("Panel")]
@@ -28,15 +25,10 @@ namespace GreatArcStudios
         public Toggle fullscreenToggle;
         public Dropdown aaCombo;
 
-        [Header("Others")]
-        /// <summary>
-        /// These are the game objects with the title texts like "Pause menu" and "Game Title" 
-        /// </summary>
+        [Header("Mask")]
         public GameObject TitleTexts;
-        /// <summary>
-        /// The mask that makes the scene darker  
-        /// </summary>
         public GameObject mask;
+        [Header("Others")]
         /// <summary>
         /// Audio Panel animator
         /// </summary>
@@ -87,19 +79,6 @@ namespace GreatArcStudios
         /// Timescale value. The defualt is 1 for most games. You may want to change it if you are pausing the game in a slow motion situation 
         /// </summary> 
         public float timeScale = 1f;
-
-        public Terrain terrain;
-        /// <summary>
-        /// Other terrain variable used if you want to have an option to target low end harware.
-        /// </summary>
-        public Terrain simpleTerrain;
-        /// <summary>
-        /// Inital shadow distance 
-        /// </summary>
-        internal static float shadowDistINI;
-        /// <summary>
-        /// Inital render distance 
-        /// </summary>
         internal static float renderDistINI;
         /// <summary>
         /// Inital AA quality 2, 4, or 8
@@ -133,26 +112,9 @@ namespace GreatArcStudios
         /// </code>
         /// </summary>
         internal static int vsyncINI;
-
-
-
-
-
         public Slider audioMasterSlider;
         public Slider audioMusicSlider;
         public Slider audioEffectsSlider;
-        public Slider masterTexSlider;
-        public Slider shadowCascadesSlider;
-        public Toggle aoToggle;
-        public Toggle dofToggle;
-        /// <summary>
-        /// Lod bias float array. You should manually assign these based on the quality level.
-        /// </summary>
-        public float[] LODBias;
-        /// <summary>
-        /// Shadow distance array. You should manually assign these based on the quality level.
-        /// </summary>
-        public float[] shadowDist;
         /// <summary>
         /// An array of music audio sources
         /// </summary>
@@ -259,14 +221,11 @@ namespace GreatArcStudios
             //get all ini values
             aaQualINI = QualitySettings.antiAliasing;
             renderDistINI = mainCam.farClipPlane;
-            shadowDistINI = QualitySettings.shadowDistance;
             fovINI = mainCam.fieldOfView;
             msaaINI = QualitySettings.antiAliasing;
             vsyncINI = QualitySettings.vSyncCount;
             //enable titles
             TitleTexts.SetActive(true);
-            //Find terrain
-            terrain = Terrain.activeTerrain;
             //Disable other panels
             mainPanel.SetActive(false);
             vidPanel.SetActive(false);
@@ -287,17 +246,6 @@ namespace GreatArcStudios
                 saveSettings.SaveGameSettings();
             }
 
-            try
-            {
-                densityINI = Terrain.activeTerrain.detailObjectDensity;
-            }
-            catch
-            {
-                if (terrain = null)
-                {
-                    Debug.Log("Terrain Not Assigned");
-                }
-            }
         }
 
         /// Restart the level by loading the loaded level.
@@ -380,7 +328,6 @@ namespace GreatArcStudios
             mainPanel.SetActive(false);
             vidPanel.SetActive(false);
             audioPanel.SetActive(true);
-            audioPanelAnimator.enabled = true;
             audioIn();
             pauseMenu.text = "Audio Menu";
         }
@@ -389,7 +336,6 @@ namespace GreatArcStudios
         public void audioIn()
         {
             uiEventSystem.SetSelectedGameObject(defualtSelectedAudio);
-            audioPanelAnimator.Play("Audio Panel In");
             audioMasterSlider.value = AudioListener.volume;
             //Perform modulo to find factor f to allow for non uniform music volumes
             float a; float b; float f;
@@ -487,7 +433,6 @@ namespace GreatArcStudios
         /// <returns></returns>
         internal IEnumerator applyAudioMain()
         {
-            audioPanelAnimator.Play("Audio Panel Out");
             yield return StartCoroutine(CoroutineUtilities.WaitForRealTime((float)audioPanelAnimator.GetCurrentAnimatorClipInfo(0).Length));
             mainPanel.SetActive(true);
             vidPanel.SetActive(false);
@@ -511,8 +456,6 @@ namespace GreatArcStudios
         /// <returns></returns>
         internal IEnumerator cancelAudioMain()
         {
-            audioPanelAnimator.Play("Audio Panel Out");
-            // Debug.Log(audioPanelAnimator.GetCurrentAnimatorClipInfo(0).Length);
             yield return StartCoroutine(CoroutineUtilities.WaitForRealTime((float)audioPanelAnimator.GetCurrentAnimatorClipInfo(0).Length));
             mainPanel.SetActive(true);
             vidPanel.SetActive(false);
@@ -521,8 +464,6 @@ namespace GreatArcStudios
             //Debug.Log(_beforeMaster + AudioListener.volume);
             try
             {
-
-
                 for (_audioEffectAmt = 0; _audioEffectAmt < effects.Length; _audioEffectAmt++)
                 {
                     //get the values for all effects before the change
@@ -538,24 +479,16 @@ namespace GreatArcStudios
                 Debug.Log("please assign the audio sources in the manager");
             }
         }
-        /////Video Options
-        /// <summary>
-        /// Show video
-        /// </summary>
+        
         public void Video()
         {
-
             mainPanel.SetActive(false);
             vidPanel.SetActive(true);
             audioPanel.SetActive(false);
-            vidPanelAnimator.enabled = true;
             videoIn();
             pauseMenu.text = "Video Menu";
 
         }
-        /// <summary>
-        /// Play the "video panel in" animation
-        /// </summary>
         public void videoIn()
         {
 
@@ -604,8 +537,6 @@ namespace GreatArcStudios
         /// Use an IEnumerator to first play the animation and then changethe video settings
         internal IEnumerator cancelVideoMain()
         {
-            vidPanelAnimator.Play("Video Panel Out");
-
             yield return StartCoroutine(CoroutineUtilities.WaitForRealTime((float)vidPanelAnimator.GetCurrentAnimatorClipInfo(0).Length));
             try
             {
@@ -617,7 +548,6 @@ namespace GreatArcStudios
                 aoBool = lastAOBool;
                 dofBool = lastDOFBool;
                 Screen.SetResolution(beforeRes.width, beforeRes.height, Screen.fullScreen);
-                QualitySettings.shadowDistance = shadowDistINI;
                 QualitySettings.antiAliasing = (int)aaQualINI;
                 QualitySettings.antiAliasing = msaaINI;
                 QualitySettings.vSyncCount = vsyncINI;
@@ -635,7 +565,6 @@ namespace GreatArcStudios
                 audioPanel.SetActive(false);
                 aoBool = lastAOBool;
                 dofBool = lastDOFBool;
-                QualitySettings.shadowDistance = shadowDistINI;
                 Screen.SetResolution(beforeRes.width, beforeRes.height, Screen.fullScreen);
                 QualitySettings.antiAliasing = (int)aaQualINI;
                 QualitySettings.antiAliasing = msaaINI;
@@ -661,17 +590,12 @@ namespace GreatArcStudios
         /// <returns></returns>
         internal IEnumerator applyVideo()
         {
-            vidPanelAnimator.Play("Video Panel Out");
             yield return StartCoroutine(CoroutineUtilities.WaitForRealTime((float)vidPanelAnimator.GetCurrentAnimatorClipInfo(0).Length));
             mainPanel.SetActive(true);
             vidPanel.SetActive(false);
             audioPanel.SetActive(false);
             renderDistINI = mainCam.farClipPlane;
-            shadowDistINI = QualitySettings.shadowDistance;
-            Debug.Log("Shadow dist ini" + shadowDistINI);
             fovINI = mainCam.fieldOfView;
-            aoBool = aoToggle.isOn;
-            dofBool = dofToggle.isOn;
             lastAOBool = aoBool;
             lastDOFBool = dofBool;
             beforeRes = currentRes;
@@ -679,20 +603,6 @@ namespace GreatArcStudios
             lastShadowCascade = QualitySettings.shadowCascades;
             vsyncINI = QualitySettings.vSyncCount;
             isFullscreen = Screen.fullScreen;
-            try
-            {
-                if (useSimpleTerrain == true)
-                {
-                    densityINI = simpleTerrain.detailObjectDensity;
-                    treeMeshAmtINI = simpleTerrain.treeMaximumFullLODCount;
-                }
-                else
-                {
-                    densityINI = terrain.detailObjectDensity;
-                    treeMeshAmtINI = simpleTerrain.treeMaximumFullLODCount;
-                }
-            }
-            catch { Debug.Log("Please assign a terrain"); }
             saveSettings.SaveGameSettings();
 
         }
@@ -713,178 +623,13 @@ namespace GreatArcStudios
             }
 
         }
-        /// <summary>
-        /// Update full high quality tree mesh amount.
-        /// </summary>
-        /// <param name="f"></param>
-        public void updateTreeMeshAmt(int f)
-        {
-
-            if (useSimpleTerrain == true)
-            {
-                simpleTerrain.treeMaximumFullLODCount = (int)f;
-            }
-            else
-            {
-                terrain.treeMaximumFullLODCount = (int)f;
-            }
-
-        }
-        /// <summary>
-        /// Change the lod bias using
-        /// <c>
-        /// QualitySettings.lodBias = LoDBias / 2.15f;
-        /// </c> 
-        /// LoDBias is only divided by 2.15 because the max is set to 10 on the slider, and dividing by 2.15 results in 4.65, our desired max. However, deleting or changing 2.15 is compeletly fine.
-        /// </summary>
-        /// <param name="LoDBias"></param>
-        public void lodBias(float LoDBias)
-        {
-            QualitySettings.lodBias = LoDBias / 2.15f;
-        }
-        /// <summary>
-        /// Update the render distance using 
-        /// <c>
-        /// mainCam.farClipPlane = f;
-        /// </c>
-        /// </summary>
-        /// <param name="f"></param>
-        public void updateRenderDist(float f)
-        {
-            try
-            {
-                mainCam.farClipPlane = f;
-
-            }
-            catch
-            {
-                Debug.Log(" Finding main camera now...it is still suggested that you manually assign this");
-                mainCam = Camera.main;
-                mainCam.farClipPlane = f;
-
-            }
-
-        }
-        /// <summary>
-        /// Update the texture quality using  
-        /// <c>QualitySettings.masterTextureLimit </c>
-        /// </summary>
-        /// <param name="qual"></param>
-        public void updateTex(float qual)
-        {
-
-            int f = Mathf.RoundToInt(qual);
-            QualitySettings.masterTextureLimit = f;
-        }
-        /// <summary>
-        /// Update the shadow distance using 
-        /// <c>
-        /// QualitySettings.shadowDistance = dist;
-        /// </c>
-        /// </summary>
-        /// <param name="dist"></param>
-        public void updateShadowDistance(float dist)
-        {
-            QualitySettings.shadowDistance = dist;
-
-        }
-        /// <summary>
-        /// Change the max amount of high quality trees using 
-        /// <c>
-        /// terrain.treeMaximumFullLODCount = (int)qual;
-        /// </c>
-        /// </summary>
-        /// <param name="qual"></param>
-        public void treeMaxLod(float qual)
-        {
-            if (useSimpleTerrain == true)
-            {
-                simpleTerrain.treeMaximumFullLODCount = (int)qual;
-            }
-            else
-            {
-                terrain.treeMaximumFullLODCount = (int)qual;
-            }
-
-        }
-        /// <summary>
-        /// Change the height map max LOD using 
-        /// <c>
-        /// terrain.heightmapMaximumLOD = (int)qual;
-        /// </c>
-        /// </summary>
-        /// <param name="qual"></param>
-        public void updateTerrainLod(float qual)
-        {
-            try { if (useSimpleTerrain == true) { simpleTerrain.heightmapMaximumLOD = (int)qual; } else { terrain.heightmapMaximumLOD = (int)qual; } }
-            catch { Debug.Log("Terrain not assigned"); return; }
-
-        }
-
         /// Change the fov using a float. The defualt should be 60.
         public void updateFOV(float fov)
         {
             mainCam.fieldOfView = fov;
         }
-        /// <summary>
-        /// Toggle on or off Depth of Field. This is meant to be used with a checkbox.
-        /// </summary>
-        /// <param name="b"></param>
-        public void toggleDOF(Boolean b)
-        {
-            try
-            {
-                tempScript = (MonoBehaviour)mainCamObj.GetComponent(DOFScriptName);
 
-                if (b == true)
-                {
-                    tempScript.enabled = true;
-                    dofBool = true;
-                }
-                else
-                {
-                    tempScript.enabled = false;
-                    dofBool = false;
-                }
-            }
-            catch
-            {
-                Debug.Log("No AO post processing found");
-                return;
-            }
-        }
-        /// <summary>
-        /// Toggle on or off Ambient Occulusion. This is meant to be used with a checkbox.
-        /// </summary>
-        /// <param name="b"></param>
-        public void toggleAO(Boolean b)
-        {
-            try
-            {
-
-                tempScript = (MonoBehaviour)mainCamObj.GetComponent(AOScriptName);
-
-                if (b == true)
-                {
-                    tempScript.enabled = true;
-                    aoBool = true;
-                }
-                else
-                {
-                    tempScript.enabled = false;
-                    aoBool = false;
-                }
-            }
-            catch
-            {
-                Debug.Log("No AO post processing found");
-                return;
-            }
-        }
-        /// <summary>
         /// Set the game to windowed or full screen. This is meant to be used with a checkbox
-        /// </summary>
-        /// <param name="b"></param>
         public void setFullScreen(Boolean b)
         {
             if (b == true)
@@ -896,10 +641,7 @@ namespace GreatArcStudios
                 Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, false);
             }
         }
-        /// <summary>
-        /// Method for moving to the next resoution in the allRes array. WARNING: This is not finished/buggy.  
-        /// </summary>
-        //Method for moving to the next resoution in the allRes array. WARNING: This is not finished/buggy.  
+
         public void nextRes()
         {
             beforeRes = currentRes;
@@ -920,7 +662,6 @@ namespace GreatArcStudios
 
         }
 
-
         //Method for moving to the last resoution in the allRes array. WARNING: This is not finished/buggy.  
         public void lastRes()
         {
@@ -938,95 +679,8 @@ namespace GreatArcStudios
                     //Debug.Log("Res after: " + currentRes);
                 }
             }
-
         }
-        public void enableSimpleTerrain(Boolean b)
-        {
-            useSimpleTerrain = b;
-        }
-        /// <summary>
-        /// Force aniso on using quality settings
-        /// </summary>
-        //Force the aniso on.
-        public void forceOnANISO()
-        {
-            QualitySettings.anisotropicFiltering = AnisotropicFiltering.ForceEnable;
-        }
-        /// <summary>
-        /// Per texture aniso using quality settings
-        /// </summary>
-        //Use per texture aniso settings.
-        public void perTexANISO()
-        {
-            QualitySettings.anisotropicFiltering = AnisotropicFiltering.Enable;
-        }
-        /// <summary>
-        /// Disable aniso using quality setttings
-        /// </summary>
-        //Disable aniso all together.
-        public void disableANISO()
-        {
-            QualitySettings.anisotropicFiltering = AnisotropicFiltering.Disable;
-        }
-        /// <summary>
-        /// The method for changing aniso settings
-        /// </summary>
-        /// <param name="anisoSetting"></param>
-        public void updateANISO(int anisoSetting)
-        {
-            if (anisoSetting == 0)
-            {
-                disableANISO();
-            }
-            else if (anisoSetting == 1)
-            {
-                forceOnANISO();
-            }
-            else if (anisoSetting == 2)
-            {
-                perTexANISO();
-            }
-        }
-
-        /// <summary>
-        /// The method for setting the amount of shadow cascades
-        /// </summary>
-        /// <param name="cascades"></param>
-        public void updateCascades(float cascades)
-        {
-
-            int c = Mathf.RoundToInt(cascades);
-            if (c == 1)
-            {
-                c = 2;
-            }
-            else if (c == 3)
-            {
-                c = 2;
-            }
-            QualitySettings.shadowCascades = c;
-        }
-        /// <summary>
-        /// Update terrain density
-        /// </summary>
-        /// <param name="density"></param>
-        public void updateDensity(float density)
-        {
-            detailDensity = density;
-            try
-            {
-                terrain.detailObjectDensity = detailDensity;
-            }
-            catch
-            {
-                Debug.Log("Please assign a terrain");
-            }
-
-        }
-        /// <summary>
-        /// Update MSAA quality using quality settings
-        /// </summary>
-        /// <param name="msaaAmount"></param>
+        
         public void updateMSAA(int msaaAmount)
         {
             if (msaaAmount == 0)
@@ -1045,29 +699,21 @@ namespace GreatArcStudios
             {
                 eightMSAA();
             }
-
         }
-        /// <summary>
-        /// Set MSAA to 0x (disabling it) using quality settings
-        /// </summary>
+
+        /// Set MSAA (disabling it) using quality settings
         public void disableMSAA()
         {
 
             QualitySettings.antiAliasing = 0;
             // aaOption.text = "MSAA: " + QualitySettings.antiAliasing.ToString();
         }
-        /// <summary>
-        /// Set MSAA to 2x using quality settings
-        /// </summary>
         public void twoMSAA()
         {
 
             QualitySettings.antiAliasing = 2;
             // aaOption.text = "MSAA: " + QualitySettings.antiAliasing.ToString();
         }
-        /// <summary>
-        /// Set MSAA to 4x using quality settings
-        /// </summary>
         public void fourMSAA()
         {
 
@@ -1075,131 +721,56 @@ namespace GreatArcStudios
 
             // aaOption.text = "MSAA: " + QualitySettings.antiAliasing.ToString();
         }
-        /// <summary>
-        /// Set MSAA to 8x using quality settings
-        /// </summary>
         public void eightMSAA()
         {
 
             QualitySettings.antiAliasing = 8;
             // aaOption.text = "MSAA: " + QualitySettings.antiAliasing.ToString();
         }
-        /// <summary>
-        /// Set the quality level one level higher. This is done by getting the current quality level, then using 
-        /// <c> 
-        /// QualitySettings.IncreaseLevel();
-        /// </c>
-        /// to increase the level. The current level variable is set to the new quality setting, and the label is updated.
-        /// </summary>
+
         public void nextPreset()
         {
             _currentLevel = QualitySettings.GetQualityLevel();
             QualitySettings.IncreaseLevel();
             _currentLevel = QualitySettings.GetQualityLevel();
             presetLabel.text = presets[_currentLevel].ToString();
-            if (hardCodeSomeVideoSettings == true)
-            {
-                QualitySettings.shadowDistance = shadowDist[_currentLevel];
-                QualitySettings.lodBias = LODBias[_currentLevel];
-            }
         }
-        /// <summary>
-        /// Set the quality level one level lower. This is done by getting the current quality level, then using 
-        /// <c> 
-        /// QualitySettings.DecreaseLevel();
-        /// </c>
-        /// to decrease the level. The current level variable is set to the new quality setting, and the label is updated.
-        /// </summary>
         public void lastPreset()
         {
             _currentLevel = QualitySettings.GetQualityLevel();
             QualitySettings.DecreaseLevel();
             _currentLevel = QualitySettings.GetQualityLevel();
             presetLabel.text = presets[_currentLevel].ToString();
-            if (hardCodeSomeVideoSettings == true)
-            {
-                QualitySettings.shadowDistance = shadowDist[_currentLevel];
-                QualitySettings.lodBias = LODBias[_currentLevel];
-            }
-
         }
-        /// <summary>
-        /// Hard code the minimal settings
-        /// </summary>
+
+        // set quality level
         public void setMinimal()
         {
             QualitySettings.SetQualityLevel(0);
-            //QualitySettings.shadowDistance = 12.6f;
-            QualitySettings.shadowDistance = shadowDist[0];
-            //QualitySettings.lodBias = 0.3f;
-            QualitySettings.lodBias = LODBias[0];
         }
-        /// <summary>
-        /// Hard code the very low settings
-        /// </summary>
         public void setVeryLow()
         {
             QualitySettings.SetQualityLevel(1);
-            //QualitySettings.shadowDistance = 17.4f;
-            QualitySettings.shadowDistance = shadowDist[1];
-            //QualitySettings.lodBias = 0.55f;
-            QualitySettings.lodBias = LODBias[1];
         }
-        /// <summary>
-        /// Hard code the low settings
-        /// </summary>
         public void setLow()
         {
             QualitySettings.SetQualityLevel(2);
-            //QualitySettings.shadowDistance = 29.7f;
-            //QualitySettings.lodBias = 0.68f;
-            QualitySettings.lodBias = LODBias[2];
-            QualitySettings.shadowDistance = shadowDist[2];
         }
-        /// <summary>
-        /// Hard code the normal settings
-        /// </summary>
         public void setNormal()
         {
             QualitySettings.SetQualityLevel(3);
-            //QualitySettings.shadowDistance = 82f;
-            //QualitySettings.lodBias = 1.09f;
-            QualitySettings.shadowDistance = shadowDist[3];
-            QualitySettings.lodBias = LODBias[3];
         }
-        /// <summary>
-        /// Hard code the very high settings
-        /// </summary>
         public void setVeryHigh()
         {
             QualitySettings.SetQualityLevel(4);
-            //QualitySettings.shadowDistance = 110f;
-            //QualitySettings.lodBias = 1.22f;
-            QualitySettings.shadowDistance = shadowDist[4];
-            QualitySettings.lodBias = LODBias[4];
         }
-        /// <summary>
-        /// Hard code the ultra settings
-        /// </summary>
         public void setUltra()
         {
             QualitySettings.SetQualityLevel(5);
-            //QualitySettings.shadowDistance = 338f;
-            //QualitySettings.lodBias = 1.59f;
-            QualitySettings.shadowDistance = shadowDist[5];
-            QualitySettings.lodBias = LODBias[5];
         }
-        /// <summary>
-        /// Hard code the extreme settings
-        /// </summary>
         public void setExtreme()
         {
             QualitySettings.SetQualityLevel(6);
-            //QualitySettings.shadowDistance = 800f;
-            //QualitySettings.lodBias = 4.37f;
-            QualitySettings.shadowDistance = shadowDist[6];
-            QualitySettings.lodBias = LODBias[6];
         }
-
     }
 }

@@ -9,29 +9,10 @@ namespace GreatArcStudios
     [System.Serializable]
     public class SaveSettings
     {
-        /// <summary>
-        /// Change the file name if something else floats your boat
-        /// </summary>
         public string fileName = "GameSettings.json";
-        /// <summary>
-        /// Music volume
-        /// </summary>
         public float musicVolume;
-        /// <summary>
-        /// Effects volume
-        /// </summary>
         public float effectsVolume;
-        /// <summary>
-        /// Master volume
-        /// </summary>
         public float masterVolume;
-        /// <summary>
-        /// Shadow Distance
-        /// </summary>
-        public float shadowDistINI;
-        /// <summary>
-        /// Render distance
-        /// </summary>
         public float renderDistINI;
         /// <summary>
         /// MSAA quality
@@ -108,7 +89,6 @@ namespace GreatArcStudios
             SaveSettings read = JsonUtility.FromJson<SaveSettings>(readString);
             QualitySettings.antiAliasing = (int)read.aaQualINI;
             PauseManager.densityINI = read.densityINI;
-            QualitySettings.shadowDistance = read.shadowDistINI;
             PauseManager.mainCamShared.farClipPlane = read.renderDistINI;
             PauseManager.treeMeshAmtINI = read.treeMeshAmtINI;
             PauseManager.mainCamShared.fieldOfView = read.fovINI;
@@ -168,7 +148,6 @@ namespace GreatArcStudios
             }
             aaQualINI = QualitySettings.antiAliasing;
             densityINI = PauseManager.densityINI;
-            shadowDistINI = PauseManager.shadowDistINI;
             renderDistINI = PauseManager.mainCamShared.farClipPlane;
             treeMeshAmtINI = PauseManager.treeMeshAmtINI;
             fovINI = PauseManager.mainCamShared.fieldOfView;
