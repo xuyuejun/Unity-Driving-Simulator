@@ -15,18 +15,11 @@ namespace GreatArcStudios
     /// </summary>
     public class PauseManager : MonoBehaviour
     {
-        /// <summary>
-        /// This is the main panel holder, which holds the main panel and should be called "main panel"
-        /// </summary> 
+        [Header("Panel")]
         public GameObject mainPanel;
-        /// <summary>
-        /// This is the video panel holder, which holds all of the controls for the video panel and should be called "vid panel"
-        /// </summary>
         public GameObject vidPanel;
-        /// <summary>
-        /// This is the audio panel holder, which holds all of the silders for the audio panel and should be called "audio panel"
-        /// </summary>
         public GameObject audioPanel;
+        [Header("Other")]
         /// <summary>
         /// These are the game objects with the title texts like "Pause menu" and "Game Title" 
         /// </summary>
@@ -252,27 +245,6 @@ namespace GreatArcStudios
         public static Terrain readSimpleTerrain;
 
         private SaveSettings saveSettings = new SaveSettings();
-        /*
-        //Color fade duration value
-        //public float crossFadeDuration;
-        //custom color
-        //public Color _customColor;
-        
-         //Animation clips
-         private AnimationClip audioIn;
-         private AnimationClip audioOut;
-         public AnimationClip vidIn;
-         public AnimationClip vidOut;
-         public AnimationClip mainIn;
-         public AnimationClip mainOut; 
-          */
-        //Blur Variables
-        //Blur Effect Script (using the standard image effects package) 
-        //public Blur blurEffect;
-        //Blur Effect Shader (should be the one that came with the package)
-        //public Shader blurEffectShader;
-        //Boolean for if the blur effect was originally enabled
-        //public Boolean blurBool;
 
         /// <summary>
         /// The start method; you will need to place all of your inital value getting/setting here. 
@@ -354,15 +326,6 @@ namespace GreatArcStudios
                     Debug.Log("Terrain Not Assigned");
                 }
             }
-
-            //set the blur boolean to false;
-            //blurBool = false;
-            //Add the blur effect
-            /*mainCamObj.AddComponent(typeof(Blur));
-            blurEffect = (Blur)mainCamObj.GetComponent(typeof(Blur));
-            blurEffect.blurShader = blurEffectShader;
-            blurEffect.enabled = false;  */
-
         }
         /// <summary>
         /// Restart the level by loading the loaded level.
@@ -373,6 +336,7 @@ namespace GreatArcStudios
             uiEventSystem.firstSelectedGameObject = defualtSelectedMain;
 
         }
+
         /// <summary>
         /// Method to resume the game, so disable the pause menu and re-enable all other ui elements
         /// </summary>
@@ -389,47 +353,14 @@ namespace GreatArcStudios
             {
                 otherUIElements[i].gameObject.SetActive(true);
             }
-            /* if (blurBool == false)
-             {
-                 blurEffect.enabled = false;
-             }
-             else
-             {
-                 //if you want to add in your own stuff do so here
-                 return;
-             } */
         }
         /// <summary>
         /// All the methods relating to qutting should be called here.
         /// </summary>
         public void quitOptions()
         {
-            vidPanel.SetActive(false);
-            audioPanel.SetActive(false);
-            quitPanelAnimator.enabled = true;
-            quitPanelAnimator.Play("QuitPanelIn");
-
-        }
-        /// <summary>
-        /// Method to quit the game. Call methods such as auto saving before qutting here.
-        /// </summary>
-        public void quitGame()
-        {
             Application.Quit();
-#if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-#endif
         }
-        /// <summary>
-        /// Cancels quittting by playing an animation.
-        /// </summary>
-        public void quitCancel()
-        {
-            quitPanelAnimator.Play("QuitPanelOut");
-        }
-        /// <summary>
-        ///Loads the main menu scene.
-        /// </summary>
         public void returnToMenu()
         {
             Application.LoadLevel(mainMenu);
@@ -440,20 +371,22 @@ namespace GreatArcStudios
         /// <summary>
         /// The update method. This mainly searches for the user pressing the escape key.
         /// </summary>
+
+
         public void Update()
         {
             readUseSimpleTerrain = useSimpleTerrain;
             useSimpleTerrain = readUseSimpleTerrain;
             //colorCrossfade();
-            if (vidPanel.active == true)
+            if (vidPanel.activeSelf == true)
             {
                 pauseMenu.text = "Video Menu";
             }
-            else if (audioPanel.active == true)
+            else if (audioPanel.activeSelf == true)
             {
                 pauseMenu.text = "Audio Menu";
             }
-            else if (mainPanel.active == true)
+            else if (mainPanel.activeSelf == true)
             {
                 pauseMenu.text = "Pause Menu";
             }
@@ -479,7 +412,6 @@ namespace GreatArcStudios
             }
             else if (Input.GetKeyDown(KeyCode.Escape) && mainPanel.active == true)
             {
-
                 Time.timeScale = timeScale;
                 mainPanel.SetActive(false);
                 vidPanel.SetActive(false);
@@ -491,24 +423,7 @@ namespace GreatArcStudios
                     otherUIElements[i].gameObject.SetActive(true);
                 }
             }
-
-
-
         }
-        /*
-        void colorCrossfade()
-        {
-            Debug.Log(pauseMenu.color);
-
-            if (pauseMenu.color == Color.white)
-            {
-                pauseMenu.CrossFadeColor(_customColor, crossFadeDuration, true, false);
-            }
-            else { 
-                pauseMenu.CrossFadeColor(Color.white, crossFadeDuration, true, false);
-            }
-        }  */
-        /////Audio Options
 
         /// <summary>
         /// Show the audio panel 
@@ -698,7 +613,6 @@ namespace GreatArcStudios
         public void videoIn()
         {
             uiEventSystem.SetSelectedGameObject(defualtSelectedVideo);
-            vidPanelAnimator.Play("Video Panel In");
 
             if (QualitySettings.antiAliasing == 0)
             {
@@ -835,7 +749,6 @@ namespace GreatArcStudios
         {
             StartCoroutine(applyVideo());
             uiEventSystem.SetSelectedGameObject(defualtSelectedMain);
-
         }
         /// <summary>
         /// Use an IEnumerator to first play the animation and then change the video settings.
@@ -1036,9 +949,6 @@ namespace GreatArcStudios
                 Debug.Log("No AO post processing found");
                 return;
             }
-
-
-
         }
         /// <summary>
         /// Toggle on or off Ambient Occulusion. This is meant to be used with a checkbox.
@@ -1074,8 +984,6 @@ namespace GreatArcStudios
         /// <param name="b"></param>
         public void setFullScreen(Boolean b)
         {
-
-
             if (b == true)
             {
                 Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, true);
@@ -1103,7 +1011,6 @@ namespace GreatArcStudios
                     if (isFullscreen == true) { Screen.SetResolution(allRes[i + 1].width, allRes[i + 1].height, true); isFullscreen = true; currentRes = Screen.resolutions[i + 1]; resolutionLabel.text = currentRes.width.ToString() + " x " + currentRes.height.ToString(); }
                     //If the user is playing in a window. Then set the resoution to one element higher in the array, set the full screen boolean to false, reset the current resolution, and then update the resolution label.
                     if (isFullscreen == false) { Screen.SetResolution(allRes[i + 1].width, allRes[i + 1].height, false); isFullscreen = false; currentRes = Screen.resolutions[i + 1]; resolutionLabel.text = currentRes.width.ToString() + " x " + currentRes.height.ToString(); }
-
                     //Debug.Log("Res after: " + currentRes);
                 }
             }
@@ -1121,13 +1028,11 @@ namespace GreatArcStudios
             {
                 if (allRes[i].height == currentRes.height && allRes[i].width == currentRes.width)
                 {
-
                     //Debug.Log("found " + i);
                     //If the user is playing fullscreen. Then set the resoution to one element lower in the array, set the full screen boolean to true, reset the current resolution, and then update the resolution label.
                     if (isFullscreen == true) { Screen.SetResolution(allRes[i - 1].width, allRes[i - 1].height, true); isFullscreen = true; currentRes = Screen.resolutions[i - 1]; resolutionLabel.text = currentRes.width.ToString() + " x " + currentRes.height.ToString(); }
                     //If the user is playing in a window. Then set the resoution to one element lower in the array, set the full screen boolean to false, reset the current resolution, and then update the resolution label.
                     if (isFullscreen == false) { Screen.SetResolution(allRes[i - 1].width, allRes[i - 1].height, false); isFullscreen = false; currentRes = Screen.resolutions[i - 1]; resolutionLabel.text = currentRes.width.ToString() + " x " + currentRes.height.ToString(); }
-
                     //Debug.Log("Res after: " + currentRes);
                 }
             }
