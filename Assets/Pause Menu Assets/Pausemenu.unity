@@ -5610,16 +5610,12 @@ MonoBehaviour:
   pauseMenu: {fileID: 1274589035}
   mainCam: {fileID: 1263049761}
   mainCamObj: {fileID: 1263914907}
-  detailDensity: 0
   timeScale: 1
-  defualtSelectedVideo: {fileID: 1263864945}
-  defualtSelectedMain: {fileID: 1263940451}
   qualityLevel: 0
   fovINI: 0
   isFullscreen: 0
   msaaINI: 0
   otherUIElements: []
-  uiEventSystem: {fileID: 1274622499}
 --- !u!114 &1274578301
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -11,7 +11,6 @@ namespace GreatArcStudios
     {
         public string fileName = "GameSettings.json";
         public int curQualityLevel;  // Quality preset
-        public int vsyncINI;  // VSync settings
         public float fovINI;  // Field of View
         public int resHeight;  // Resolution heigh        
         public int resWidth;  // Resolution Width
@@ -20,13 +19,14 @@ namespace GreatArcStudios
 
         public void LoadGameSettings(String readString)
         {
-            Debug.Log("Load");
             SaveSettings read = JsonUtility.FromJson<SaveSettings>(readString);
-            QualitySettings.antiAliasing = read.msaaINI;
-            PauseManager.mainCamShared.fieldOfView = read.fovINI;
-            QualitySettings.vSyncCount = read.vsyncINI;
+
+            // Load Graphics
             QualitySettings.SetQualityLevel(read.curQualityLevel);
+            PauseManager.mainCamShared.fieldOfView = read.fovINI;
             Screen.SetResolution(read.resWidth, read.resHeight, read.fullscreenBool);
+            QualitySettings.antiAliasing = read.msaaINI;
+            
         }
 
         // Get the quality/music settings before saving 
@@ -39,14 +39,14 @@ namespace GreatArcStudios
                 File.Delete(Application.persistentDataPath + "/" + fileName);
             }
 
-            msaaINI = QualitySettings.antiAliasing;
-            fovINI = PauseManager.mainCamShared.fieldOfView;
+            // Save Graphics
             curQualityLevel = QualitySettings.GetQualityLevel();
-
+            fovINI = PauseManager.mainCamShared.fieldOfView;
             resHeight = Screen.currentResolution.height;
             resWidth = Screen.currentResolution.width;
             fullscreenBool = Screen.fullScreen;
-            
+            msaaINI = QualitySettings.antiAliasing;
+
             jsonString = JsonUtility.ToJson(this);
             Debug.Log(jsonString);
             File.WriteAllText(Application.persistentDataPath + "/" + fileName, jsonString);

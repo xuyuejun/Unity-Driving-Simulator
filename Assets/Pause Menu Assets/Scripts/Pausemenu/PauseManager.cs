@@ -30,11 +30,7 @@ namespace GreatArcStudios
         internal static Camera mainCamShared;
         public GameObject mainCamObj;
         [Header("Settings")]
-        public float detailDensity;
         public float timeScale = 1f;
-        [Header("Defualt Selected")]
-        public GameObject defualtSelectedVideo;
-        public GameObject defualtSelectedMain;      // Defualt selected on the video panel
         [Header("INI")]
         public int qualityLevel;
         public float fovINI;
@@ -42,11 +38,8 @@ namespace GreatArcStudios
         public Boolean isFullscreen;
         public int msaaINI;
         [Header("Others")]
-        /// <summary>
-        /// An array of the other UI elements, which is used for disabling the other elements when the game is paused.
-        /// </summary>
+        // An array of the other UI elements, which is used for disabling the other elements when the game is paused.
         public GameObject[] otherUIElements;
-        public EventSystem uiEventSystem;
         //Resoutions
         private Resolution[] allRes;
         //Presets 
@@ -54,19 +47,16 @@ namespace GreatArcStudios
         //Last resoultion 
         private Resolution beforeRes;
         //last shadow cascade value
-        internal static int lastShadowCascade;
-
         private SaveSettings saveSettings = new SaveSettings();
 
         // The start method; you will need to place all of your inital value getting/setting here. 
         public void Start()
         {
             mainCamShared = mainCam;
-            uiEventSystem.firstSelectedGameObject = defualtSelectedMain;    //Set the first selected item
-
             // Video Panel
             presets = QualitySettings.names;        //Get the presets from the quality settings 
             presetLabel.text = presets[QualitySettings.GetQualityLevel()].ToString();
+            qualityLevel = QualitySettings.GetQualityLevel();
             fovINI = mainCam.fieldOfView;
             allRes = Screen.resolutions;
             currentRes = Screen.currentResolution;
@@ -74,19 +64,13 @@ namespace GreatArcStudios
             isFullscreen = Screen.fullScreen;
             msaaINI = QualitySettings.antiAliasing;
 
-
-            qualityLevel = QualitySettings.GetQualityLevel();
-            //enable titles
             TitleTexts.SetActive(true);
-            //Disable other panels
             mainPanel.SetActive(false);
             vidPanel.SetActive(false);
             settingPanel.SetActive(false);
-            //Enable mask
             mask.SetActive(false);
-            //set last shadow cascade 
-            lastShadowCascade = QualitySettings.shadowCascades;
 
+            // If settings files not found
             try
             {
                 saveSettings.LoadGameSettings(File.ReadAllText(Application.persistentDataPath + "/" + saveSettings.fileName));
@@ -96,7 +80,6 @@ namespace GreatArcStudios
                 Debug.Log("Game settings not found in: " + Application.persistentDataPath + "/" + saveSettings.fileName);
                 saveSettings.SaveGameSettings();
             }
-
         }
 
         /// Restart the level by loading the loaded level.
@@ -110,15 +93,59 @@ namespace GreatArcStudios
         public void Resume()
         {
             Time.timeScale = timeScale;
+
             mainPanel.SetActive(false);
             vidPanel.SetActive(false);
             settingPanel.SetActive(false);
             TitleTexts.SetActive(false);
             mask.SetActive(false);
+
             for (int i = 0; i < otherUIElements.Length; i++)
             {
                 otherUIElements[i].gameObject.SetActive(true);
             }
+        }
+
+        public void Video()
+        {
+            mainPanel.SetActive(false);
+            vidPanel.SetActive(true);
+            settingPanel.SetActive(false);
+            pauseMenu.text = "Video Menu";
+
+            // Presets
+            presetLabel.text = presets[QualitySettings.GetQualityLevel()].ToString();
+            // Field of View
+            fovSlider.value = mainCam.fieldOfView;
+            // Fullscreen
+            fullscreenToggle.isOn = Screen.fullScreen;
+            // MSAA
+            if (QualitySettings.antiAliasing == 0)
+            {
+                aaCombo.value = 0;
+            }
+            else if (QualitySettings.antiAliasing == 2)
+            {
+                aaCombo.value = 1;
+            }
+            else if (QualitySettings.antiAliasing == 4)
+            {
+                aaCombo.value = 2;
+            }
+            else if (QualitySettings.antiAliasing == 8)
+            {
+                aaCombo.value = 3;
+            }
+        }
+
+        /// Show the settings panel 
+        public void Settings()
+        {
+            mainPanel.SetActive(false);
+            vidPanel.SetActive(false);
+            settingPanel.SetActive(true);
+            pauseMenu.text = "Audio Menu";
+            // Somethings
         }
 
         /// All the methods relating to qutting should be called here.
@@ -144,8 +171,6 @@ namespace GreatArcStudios
 
             if (Input.GetKeyDown(KeyCode.Escape) && mainPanel.activeSelf == false)
             {
-
-                uiEventSystem.SetSelectedGameObject(defualtSelectedMain);
                 mainPanel.SetActive(true);
                 vidPanel.SetActive(false);
                 settingPanel.SetActive(false);
@@ -172,61 +197,15 @@ namespace GreatArcStudios
             }
         }
 
-        /// Show the settings panel 
-        public void Settings()
-        {
-            mainPanel.SetActive(false);
-            vidPanel.SetActive(false);
-            settingPanel.SetActive(true);
-            pauseMenu.text = "Audio Menu";
-            // Somethings
-        }
-
-        public void Video()
-        {
-            mainPanel.SetActive(false);
-            vidPanel.SetActive(true);
-            settingPanel.SetActive(false);
-            pauseMenu.text = "Video Menu";
-
-            uiEventSystem.SetSelectedGameObject(defualtSelectedVideo);
-            // Presets
-            presetLabel.text = presets[QualitySettings.GetQualityLevel()].ToString();
-            // Field of View
-            fovSlider.value = mainCam.fieldOfView;
-            // Fullscreen
-            fullscreenToggle.isOn = Screen.fullScreen;
-            // MSAA
-            if (QualitySettings.antiAliasing == 0)
-            {
-                aaCombo.value = 0;
-            }
-            else if (QualitySettings.antiAliasing == 2)
-            {
-                aaCombo.value = 1;
-            }
-            else if (QualitySettings.antiAliasing == 4)
-            {
-                aaCombo.value = 2;
-            }
-            else if (QualitySettings.antiAliasing == 8)
-            {
-                aaCombo.value = 3;
-            }
-        }
-
         /// Cancel the video setting changes 
         public void cancelVideo()
         {
-            uiEventSystem.SetSelectedGameObject(defualtSelectedMain);
-            
             mainCam.fieldOfView = fovINI;
             mainPanel.SetActive(true);
             vidPanel.SetActive(false);
             settingPanel.SetActive(false);
             Screen.SetResolution(beforeRes.width, beforeRes.height, Screen.fullScreen);
             QualitySettings.antiAliasing = msaaINI;
-            QualitySettings.shadowCascades = lastShadowCascade;
             Screen.fullScreen = isFullscreen;
         }
         public void applyVideo()
@@ -236,10 +215,8 @@ namespace GreatArcStudios
             settingPanel.SetActive(false);
             fovINI = mainCam.fieldOfView;
             beforeRes = currentRes;
-            lastShadowCascade = QualitySettings.shadowCascades;
             isFullscreen = Screen.fullScreen;
             saveSettings.SaveGameSettings();
-            // uiEventSystem.SetSelectedGameObject(defualtSelectedMain);
         }
 
         // Graphics Functions
@@ -263,7 +240,7 @@ namespace GreatArcStudios
         {
             mainCam.fieldOfView = fov;
         }
-        
+
         // Set the Resolution
         public void nextRes()
         {
