@@ -42,8 +42,9 @@ namespace GreatArcStudios
             aaQualINI = QualitySettings.antiAliasing;
             msaaINI = QualitySettings.antiAliasing;
             fovINI = PauseManager.mainCamShared.fieldOfView;
-            vsyncINI = PauseManager.vsyncINI;
+            // vsyncINI = PauseManager.vsyncINI;
             curQualityLevel = QualitySettings.GetQualityLevel();
+
             resHeight = Screen.currentResolution.height;
             resWidth = Screen.currentResolution.width;
             fullscreenBool = Screen.fullScreen;
