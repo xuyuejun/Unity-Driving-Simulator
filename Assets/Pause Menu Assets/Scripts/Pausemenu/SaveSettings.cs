@@ -26,7 +26,6 @@ namespace GreatArcStudios
             PauseManager.mainCamShared.fieldOfView = read.fovINI;
             Screen.SetResolution(read.resWidth, read.resHeight, read.fullscreenBool);
             QualitySettings.antiAliasing = read.msaaINI;
-            
         }
 
         // Get the quality/music settings before saving 
@@ -46,7 +45,7 @@ namespace GreatArcStudios
             resWidth = Screen.currentResolution.width;
             fullscreenBool = Screen.fullScreen;
             msaaINI = QualitySettings.antiAliasing;
-
+        
             jsonString = JsonUtility.ToJson(this);
             Debug.Log(jsonString);
             File.WriteAllText(Application.persistentDataPath + "/" + fileName, jsonString);

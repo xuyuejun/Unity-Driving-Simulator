@@ -44,8 +44,6 @@ namespace GreatArcStudios
         private Resolution[] allRes;
         //Presets 
         private String[] presets;
-        //Last resoultion 
-        private Resolution beforeRes;
         //last shadow cascade value
         private SaveSettings saveSettings = new SaveSettings();
 
@@ -138,7 +136,7 @@ namespace GreatArcStudios
             }
         }
 
-        /// Show the settings panel 
+        // Show the settings panel 
         public void Settings()
         {
             mainPanel.SetActive(false);
@@ -148,7 +146,7 @@ namespace GreatArcStudios
             // Somethings
         }
 
-        /// All the methods relating to qutting should be called here.
+        // All the methods relating to qutting should be called here.
         public void quitOptions()
         {
             Application.Quit();
@@ -198,24 +196,27 @@ namespace GreatArcStudios
         }
 
         /// Cancel the video setting changes 
-        public void cancelVideo()
+        public void resetVideo()
         {
-            mainCam.fieldOfView = fovINI;
             mainPanel.SetActive(true);
             vidPanel.SetActive(false);
             settingPanel.SetActive(false);
-            Screen.SetResolution(beforeRes.width, beforeRes.height, Screen.fullScreen);
+
+            QualitySettings.SetQualityLevel(3);
+            mainCam.fieldOfView = 60;
+            Screen.fullScreen = true;
+            Screen.SetResolution(allRes[allRes.Length - 1].width, allRes[allRes.Length - 1].height, Screen.fullScreen);
             QualitySettings.antiAliasing = msaaINI;
-            Screen.fullScreen = isFullscreen;
         }
         public void applyVideo()
         {
             mainPanel.SetActive(true);
             vidPanel.SetActive(false);
             settingPanel.SetActive(false);
+
             fovINI = mainCam.fieldOfView;
-            beforeRes = currentRes;
             isFullscreen = Screen.fullScreen;
+            
             saveSettings.SaveGameSettings();
         }
 
@@ -244,7 +245,6 @@ namespace GreatArcStudios
         // Set the Resolution
         public void nextRes()
         {
-            beforeRes = currentRes;
             //Iterate through all of the resoultions. 
             for (int i = 0; i < allRes.Length; i++)
             {
@@ -265,7 +265,6 @@ namespace GreatArcStudios
         //Method for moving to the last resoution in the allRes array. WARNING: This is not finished/buggy.  
         public void lastRes()
         {
-            beforeRes = currentRes;
             //Iterate through all of the resoultions. 
             for (int i = 0; i < allRes.Length; i++)
             {
