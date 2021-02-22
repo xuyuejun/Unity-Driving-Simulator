@@ -16,13 +16,12 @@ namespace GreatArcStudios
         public int resHeight;  // Resolution heigh        
         public int resWidth;  // Resolution Width
         public bool fullscreenBool;  // Is the game in fullscreen
-        public float aaQualINI;  // MSAA quality
-        public int msaaINI;
+        public int msaaINI;     // MSAA quality
 
         public void LoadGameSettings(String readString)
         {
+            Debug.Log("Load");
             SaveSettings read = JsonUtility.FromJson<SaveSettings>(readString);
-            QualitySettings.antiAliasing = (int)read.aaQualINI;
             QualitySettings.antiAliasing = read.msaaINI;
             PauseManager.mainCamShared.fieldOfView = read.fovINI;
             QualitySettings.vSyncCount = read.vsyncINI;
@@ -33,16 +32,15 @@ namespace GreatArcStudios
         // Get the quality/music settings before saving 
         public void SaveGameSettings()
         {
+            Debug.Log("Save");
             string jsonString;
             if (File.Exists(Application.persistentDataPath + "/" + fileName))
             {
                 File.Delete(Application.persistentDataPath + "/" + fileName);
             }
 
-            aaQualINI = QualitySettings.antiAliasing;
             msaaINI = QualitySettings.antiAliasing;
             fovINI = PauseManager.mainCamShared.fieldOfView;
-            // vsyncINI = PauseManager.vsyncINI;
             curQualityLevel = QualitySettings.GetQualityLevel();
 
             resHeight = Screen.currentResolution.height;
@@ -53,7 +51,5 @@ namespace GreatArcStudios
             Debug.Log(jsonString);
             File.WriteAllText(Application.persistentDataPath + "/" + fileName, jsonString);
         }
-
-
     }
 }

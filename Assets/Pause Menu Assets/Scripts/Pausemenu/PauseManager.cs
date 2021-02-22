@@ -16,7 +16,6 @@ namespace GreatArcStudios
         public GameObject settingPanel;
         [Header("Video Setting")]
         public Text presetLabel;
-        public Toggle vSyncToggle;
         public Slider fovSlider;
         public Text resolutionLabel;
         public Toggle fullscreenToggle;
@@ -38,7 +37,6 @@ namespace GreatArcStudios
         public GameObject defualtSelectedMain;      // Defualt selected on the video panel
         [Header("INI")]
         public int qualityLevel;
-        public int vsyncINI;
         public float fovINI;
         private Resolution currentRes;
         public Boolean isFullscreen;
@@ -69,7 +67,6 @@ namespace GreatArcStudios
             // Video Panel
             presets = QualitySettings.names;        //Get the presets from the quality settings 
             presetLabel.text = presets[QualitySettings.GetQualityLevel()].ToString();
-            vsyncINI = QualitySettings.vSyncCount;
             fovINI = mainCam.fieldOfView;
             allRes = Screen.resolutions;
             currentRes = Screen.currentResolution;
@@ -195,15 +192,6 @@ namespace GreatArcStudios
             uiEventSystem.SetSelectedGameObject(defualtSelectedVideo);
             // Presets
             presetLabel.text = presets[QualitySettings.GetQualityLevel()].ToString();
-            // VSync
-            if (QualitySettings.vSyncCount == 0)
-            {
-                vSyncToggle.isOn = false;
-            }
-            else if (QualitySettings.vSyncCount == 1)
-            {
-                vSyncToggle.isOn = true;
-            }
             // Field of View
             fovSlider.value = mainCam.fieldOfView;
             // Fullscreen
@@ -231,25 +219,15 @@ namespace GreatArcStudios
         public void cancelVideo()
         {
             uiEventSystem.SetSelectedGameObject(defualtSelectedMain);
-            cancelVideoMain();
-        }
-
-        public void cancelVideoMain()
-        {
+            
             mainCam.fieldOfView = fovINI;
             mainPanel.SetActive(true);
             vidPanel.SetActive(false);
             settingPanel.SetActive(false);
             Screen.SetResolution(beforeRes.width, beforeRes.height, Screen.fullScreen);
             QualitySettings.antiAliasing = msaaINI;
-            QualitySettings.vSyncCount = vsyncINI;
             QualitySettings.shadowCascades = lastShadowCascade;
             Screen.fullScreen = isFullscreen;
-        }
-        public void apply()
-        {
-            applyVideo();
-            uiEventSystem.SetSelectedGameObject(defualtSelectedMain);
         }
         public void applyVideo()
         {
@@ -259,9 +237,9 @@ namespace GreatArcStudios
             fovINI = mainCam.fieldOfView;
             beforeRes = currentRes;
             lastShadowCascade = QualitySettings.shadowCascades;
-            vsyncINI = QualitySettings.vSyncCount;
             isFullscreen = Screen.fullScreen;
             saveSettings.SaveGameSettings();
+            // uiEventSystem.SetSelectedGameObject(defualtSelectedMain);
         }
 
         // Graphics Functions
@@ -280,25 +258,13 @@ namespace GreatArcStudios
             presetLabel.text = presets[qualityLevel].ToString();
         }
 
-        public void toggleVSync(Boolean B)
-        {
-            vsyncINI = QualitySettings.vSyncCount;
-            if (B == true)
-            {
-                QualitySettings.vSyncCount = 1;
-            }
-            else
-            {
-                QualitySettings.vSyncCount = 0;
-            }
-        }
-
         /// Change the fov using a float. The defualt should be 60.
         public void updateFOV(float fov)
         {
             mainCam.fieldOfView = fov;
         }
-
+        
+        // Set the Resolution
         public void nextRes()
         {
             beforeRes = currentRes;
@@ -351,6 +317,7 @@ namespace GreatArcStudios
             }
         }
 
+        // Set the MSAA
         public void updateMSAA(int msaaAmount)
         {
             if (msaaAmount == 0)
