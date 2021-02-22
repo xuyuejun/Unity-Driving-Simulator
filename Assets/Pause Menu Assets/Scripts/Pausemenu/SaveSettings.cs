@@ -38,6 +38,7 @@ namespace GreatArcStudios
             {
                 File.Delete(Application.persistentDataPath + "/" + fileName);
             }
+
             aaQualINI = QualitySettings.antiAliasing;
             msaaINI = QualitySettings.antiAliasing;
             fovINI = PauseManager.mainCamShared.fieldOfView;
@@ -46,6 +47,7 @@ namespace GreatArcStudios
             resHeight = Screen.currentResolution.height;
             resWidth = Screen.currentResolution.width;
             fullscreenBool = Screen.fullScreen;
+            
             jsonString = JsonUtility.ToJson(this);
             Debug.Log(jsonString);
             File.WriteAllText(Application.persistentDataPath + "/" + fileName, jsonString);

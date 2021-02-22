@@ -13,7 +13,7 @@ namespace GreatArcStudios
         [Header("Panel")]
         public GameObject mainPanel;
         public GameObject vidPanel;
-        public GameObject audioPanel;
+        public GameObject settingPanel;
         [Header("Video Setting")]
         public Text presetLabel;
         public Toggle vSyncToggle;
@@ -25,11 +25,19 @@ namespace GreatArcStudios
         [Header("Mask")]
         public GameObject TitleTexts;
         public GameObject mask;
+        public Text pauseMenu;
+        [Header("Camera")]
+        public Camera mainCam;
+        internal static Camera mainCamShared;
+        public GameObject mainCamObj;
+        [Header("Settings")]
+        public float detailDensity;
+        public float timeScale = 1f;
         [Header("Others")]
         /// <summary>
         /// Audio Panel animator
         /// </summary>
-        public Animator audioPanelAnimator;
+        public Animator settingPanelAnimator;
         /// <summary>
         /// Video Panel animator  
         /// </summary>
@@ -38,44 +46,7 @@ namespace GreatArcStudios
         /// Quit Panel animator  
         /// </summary>
         public Animator quitPanelAnimator;
-        /// <summary>
-        /// Pause menu text 
-        /// </summary>
-        public Text pauseMenu;
 
-        /// <summary>
-        /// Main menu level string used for loading the main menu. This means you'll need to type in the editor text box, the name of the main menu level, ie: "mainmenu";
-        /// </summary>
-        public String mainMenu;
-        //DOF script name
-        /// <summary>
-        /// The Depth of Field script name, ie: "DepthOfField". You can leave this blank in the editor, but will throw a null refrence exception, which is harmless.
-        /// </summary>
-        public String DOFScriptName;
-
-        /// <summary>
-        /// The Ambient Occlusion script name, ie: "AmbientOcclusion". You can leave this blank in the editor, but will throw a null refrence exception, which is harmless.
-        /// </summary>
-        public String AOScriptName;
-        /// <summary>
-        /// The main camera, assign this through the editor. 
-        /// </summary>        
-        public Camera mainCam;
-        internal static Camera mainCamShared;
-        /// <summary>
-        /// The main camera game object, assign this through the editor. 
-        /// </summary> 
-        public GameObject mainCamObj;
-
-        /// <summary>
-        /// The terrain detail density float. It's only public because you may want to adjust it in editor
-        /// </summary> 
-        public float detailDensity;
-
-        /// <summary>
-        /// Timescale value. The defualt is 1 for most games. You may want to change it if you are pausing the game in a slow motion situation 
-        /// </summary> 
-        public float timeScale = 1f;
         internal static float renderDistINI;
         /// <summary>
         /// Inital AA quality 2, 4, or 8
@@ -97,24 +68,7 @@ namespace GreatArcStudios
         /// Inital msaa amount 
         /// </summary>
         internal static int msaaINI;
-        /// <summary>
-        /// Inital vsync count, the Unity docs say,
-        /// <code> 
-        /// //This will set the game to have one VSync per frame
-        /// QualitySettings.vSyncCount = 1;
-        /// </code>
-        /// <code>
-        /// //This will disable vsync
-        /// QualitySettings.vSyncCount = 0;
-        /// </code>
-        /// </summary>
         internal static int vsyncINI;
-        public Slider audioMasterSlider;
-        public Slider audioMusicSlider;
-        public Slider audioEffectsSlider;
-        /// <summary>
-        /// An array of music audio sources
-        /// </summary>
         public AudioSource[] music;
         /// <summary>
         /// An array of sound effect audio sources
@@ -197,9 +151,6 @@ namespace GreatArcStudios
         public void Start()
         {
             mainCamShared = mainCam;
-            //Set the lastmusicmult and last audiomult
-            lastMusicMult = audioMusicSlider.value;
-            lastAudioMult = audioEffectsSlider.value;
             //Set the first selected item
             uiEventSystem.firstSelectedGameObject = defualtSelectedMain;
             //Get the presets from the quality settings 
@@ -212,9 +163,6 @@ namespace GreatArcStudios
             //Debug.Log("ini res" + currentRes);
             resolutionLabel.text = Screen.currentResolution.width.ToString() + " x " + Screen.currentResolution.height.ToString();
             isFullscreen = Screen.fullScreen;
-            //get all specified audio source volumes
-            _beforeEffectVol = new float[_audioEffectAmt];
-            beforeMaster = AudioListener.volume;
             //get all ini values
             aaQualINI = QualitySettings.antiAliasing;
             renderDistINI = mainCam.farClipPlane;
@@ -226,7 +174,7 @@ namespace GreatArcStudios
             //Disable other panels
             mainPanel.SetActive(false);
             vidPanel.SetActive(false);
-            audioPanel.SetActive(false);
+            settingPanel.SetActive(false);
             //Enable mask
             mask.SetActive(false);
             //set last texture limit
@@ -259,7 +207,7 @@ namespace GreatArcStudios
             Time.timeScale = timeScale;
             mainPanel.SetActive(false);
             vidPanel.SetActive(false);
-            audioPanel.SetActive(false);
+            settingPanel.SetActive(false);
             TitleTexts.SetActive(false);
             mask.SetActive(false);
             for (int i = 0; i < otherUIElements.Length; i++)
@@ -280,7 +228,7 @@ namespace GreatArcStudios
             {
                 pauseMenu.text = "Video Menu";
             }
-            else if (audioPanel.activeSelf == true)
+            else if (settingPanel.activeSelf == true)
             {
                 pauseMenu.text = "Audio Menu";
             }
@@ -295,7 +243,7 @@ namespace GreatArcStudios
                 uiEventSystem.SetSelectedGameObject(defualtSelectedMain);
                 mainPanel.SetActive(true);
                 vidPanel.SetActive(false);
-                audioPanel.SetActive(false);
+                settingPanel.SetActive(false);
                 TitleTexts.SetActive(true);
                 mask.SetActive(true);
                 Time.timeScale = 0;
@@ -309,7 +257,7 @@ namespace GreatArcStudios
                 Time.timeScale = timeScale;
                 mainPanel.SetActive(false);
                 vidPanel.SetActive(false);
-                audioPanel.SetActive(false);
+                settingPanel.SetActive(false);
                 TitleTexts.SetActive(false);
                 mask.SetActive(false);
                 for (int i = 0; i < otherUIElements.Length; i++)
@@ -324,7 +272,7 @@ namespace GreatArcStudios
         {
             mainPanel.SetActive(false);
             vidPanel.SetActive(false);
-            audioPanel.SetActive(true);
+            settingPanel.SetActive(true);
             audioIn();
             pauseMenu.text = "Audio Menu";
         }
@@ -333,20 +281,16 @@ namespace GreatArcStudios
         public void audioIn()
         {
             uiEventSystem.SetSelectedGameObject(defualtSelectedAudio);
-            audioMasterSlider.value = AudioListener.volume;
-            //Perform modulo to find factor f to allow for non uniform music volumes
             float a; float b; float f;
             try
             {
                 a = music[0].volume;
                 b = music[1].volume;
                 f = a % b;
-                audioMusicSlider.value = f;
             }
             catch
             {
                 Debug.Log("You do not have multiple audio sources");
-                audioMusicSlider.value = lastMusicMult;
             }
             //Do this with the effects
             try
@@ -354,12 +298,10 @@ namespace GreatArcStudios
                 a = effects[0].volume;
                 b = effects[1].volume;
                 f = a % b;
-                audioEffectsSlider.value = f;
             }
             catch
             {
                 Debug.Log("You do not have multiple audio sources");
-                audioEffectsSlider.value = lastAudioMult;
             }
 
         }
@@ -415,73 +357,12 @@ namespace GreatArcStudios
             }
 
         }
-        /// <summary> 
-        /// The method for changing the applying new audio settings
-        /// </summary>
-        public void applyAudio()
-        {
-            StartCoroutine(applyAudioMain());
-            uiEventSystem.SetSelectedGameObject(defualtSelectedMain);
 
-        }
-        /// <summary>
-        /// Use an IEnumerator to first play the animation and then change the audio settings
-        /// </summary>
-        /// <returns></returns>
-        internal IEnumerator applyAudioMain()
-        {
-            yield return StartCoroutine(CoroutineUtilities.WaitForRealTime((float)audioPanelAnimator.GetCurrentAnimatorClipInfo(0).Length));
-            mainPanel.SetActive(true);
-            vidPanel.SetActive(false);
-            audioPanel.SetActive(false);
-            beforeMaster = AudioListener.volume;
-            lastMusicMult = audioMusicSlider.value;
-            lastAudioMult = audioEffectsSlider.value;
-            saveSettings.SaveGameSettings();
-        }
-        /// <summary>
-        /// Cancel the audio setting changes
-        /// </summary>
-        public void cancelAudio()
-        {
-            uiEventSystem.SetSelectedGameObject(defualtSelectedMain);
-            StartCoroutine(cancelAudioMain());
-        }
-        /// <summary>
-        /// Use an IEnumerator to first play the animation and then change the audio settings
-        /// </summary>
-        /// <returns></returns>
-        internal IEnumerator cancelAudioMain()
-        {
-            yield return StartCoroutine(CoroutineUtilities.WaitForRealTime((float)audioPanelAnimator.GetCurrentAnimatorClipInfo(0).Length));
-            mainPanel.SetActive(true);
-            vidPanel.SetActive(false);
-            audioPanel.SetActive(false);
-            AudioListener.volume = beforeMaster;
-            //Debug.Log(_beforeMaster + AudioListener.volume);
-            try
-            {
-                for (_audioEffectAmt = 0; _audioEffectAmt < effects.Length; _audioEffectAmt++)
-                {
-                    //get the values for all effects before the change
-                    effects[_audioEffectAmt].volume = _beforeEffectVol[_audioEffectAmt];
-                }
-                for (int _musicAmt = 0; _musicAmt < music.Length; _musicAmt++)
-                {
-                    music[_musicAmt].volume = _beforeMusic;
-                }
-            }
-            catch
-            {
-                Debug.Log("please assign the audio sources in the manager");
-            }
-        }
-        
         public void Video()
         {
             mainPanel.SetActive(false);
             vidPanel.SetActive(true);
-            audioPanel.SetActive(false);
+            settingPanel.SetActive(false);
             videoIn();
             pauseMenu.text = "Video Menu";
 
@@ -528,20 +409,19 @@ namespace GreatArcStudios
         public void cancelVideo()
         {
             uiEventSystem.SetSelectedGameObject(defualtSelectedMain);
-            StartCoroutine(cancelVideoMain());
+            cancelVideoMain();
         }
 
         /// Use an IEnumerator to first play the animation and then changethe video settings
-        internal IEnumerator cancelVideoMain()
+        public void cancelVideoMain()
         {
-            yield return StartCoroutine(CoroutineUtilities.WaitForRealTime((float)vidPanelAnimator.GetCurrentAnimatorClipInfo(0).Length));
             try
             {
                 mainCam.farClipPlane = renderDistINI;
                 mainCam.fieldOfView = fovINI;
                 mainPanel.SetActive(true);
                 vidPanel.SetActive(false);
-                audioPanel.SetActive(false);
+                settingPanel.SetActive(false);
                 aoBool = lastAOBool;
                 dofBool = lastDOFBool;
                 Screen.SetResolution(beforeRes.width, beforeRes.height, Screen.fullScreen);
@@ -559,7 +439,7 @@ namespace GreatArcStudios
                 mainCam.fieldOfView = fovINI;
                 mainPanel.SetActive(true);
                 vidPanel.SetActive(false);
-                audioPanel.SetActive(false);
+                settingPanel.SetActive(false);
                 aoBool = lastAOBool;
                 dofBool = lastDOFBool;
                 Screen.SetResolution(beforeRes.width, beforeRes.height, Screen.fullScreen);
@@ -572,25 +452,20 @@ namespace GreatArcStudios
             }
 
         }
-        //Apply the video prefs
-        /// <summary>
-        /// Apply the video settings
-        /// </summary>
         public void apply()
         {
-            StartCoroutine(applyVideo());
+            applyVideo();
             uiEventSystem.SetSelectedGameObject(defualtSelectedMain);
         }
         /// <summary>
         /// Use an IEnumerator to first play the animation and then change the video settings.
         /// </summary>
         /// <returns></returns>
-        internal IEnumerator applyVideo()
+        public void applyVideo()
         {
-            yield return StartCoroutine(CoroutineUtilities.WaitForRealTime((float)vidPanelAnimator.GetCurrentAnimatorClipInfo(0).Length));
             mainPanel.SetActive(true);
             vidPanel.SetActive(false);
-            audioPanel.SetActive(false);
+            settingPanel.SetActive(false);
             renderDistINI = mainCam.farClipPlane;
             fovINI = mainCam.fieldOfView;
             lastAOBool = aoBool;
@@ -602,10 +477,7 @@ namespace GreatArcStudios
             isFullscreen = Screen.fullScreen;
             saveSettings.SaveGameSettings();
         }
-        /// <summary>
-        /// Video Options
-        /// </summary>
-        /// <param name="B"></param>
+
         public void toggleVSync(Boolean B)
         {
             vsyncINI = QualitySettings.vSyncCount;
@@ -617,8 +489,8 @@ namespace GreatArcStudios
             {
                 QualitySettings.vSyncCount = 0;
             }
-
         }
+
         /// Change the fov using a float. The defualt should be 60.
         public void updateFOV(float fov)
         {
@@ -676,7 +548,7 @@ namespace GreatArcStudios
                 }
             }
         }
-        
+
         public void updateMSAA(int msaaAmount)
         {
             if (msaaAmount == 0)
