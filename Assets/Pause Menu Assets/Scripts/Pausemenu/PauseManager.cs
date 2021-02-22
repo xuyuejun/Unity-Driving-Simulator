@@ -46,7 +46,6 @@ namespace GreatArcStudios
         private String[] presets;
         //last shadow cascade value
         private SaveSettings saveSettings = new SaveSettings();
-
         // The start method; you will need to place all of your inital value getting/setting here. 
         public void Start()
         {
@@ -216,7 +215,6 @@ namespace GreatArcStudios
 
             fovINI = mainCam.fieldOfView;
             isFullscreen = Screen.fullScreen;
-            
             saveSettings.SaveGameSettings();
         }
 
