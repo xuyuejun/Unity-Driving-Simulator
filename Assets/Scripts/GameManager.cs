@@ -42,7 +42,6 @@ public class GameManager : MonoBehaviour
     public class Player
     {
         public string name;
-        public string EnglishName;
         public int drivingExperience;
         public string date;
         public string displayType;
@@ -85,8 +84,9 @@ public class GameManager : MonoBehaviour
     public int index = 0;
     void Start()
     {
-        string PlayerJson = ReadFromFile(PlayerFile);
-        JsonUtility.FromJsonOverwrite(PlayerJson, playerData);
+        Debug.Log("name");
+        // string PlayerJson = ReadFromFile(PlayerFile);
+        // JsonUtility.FromJsonOverwrite(PlayerJson, playerData);
     }
     void FixedUpdate()
     {
@@ -188,7 +188,6 @@ public class GameManager : MonoBehaviour
         GUILayout.Label("index: " + index);
 
         GUILayout.Label("Name: " + playerData.name);
-        GUILayout.Label("English Name: " + playerData.EnglishName);
         GUILayout.Label("Driving Experience" + playerData.drivingExperience);
     }
 
