@@ -6,6 +6,7 @@ TagManager:
   tags:
   - StartCheckpoint
   - Car
+  - NoScSound
   layers:
   - Default
   - TransparentFX
@@ -17,7 +18,7 @@ TagManager:
   - 
   - MiniMap
   - Waypoints
-  - 
+  - Windshield
   - 
   - 
   - 

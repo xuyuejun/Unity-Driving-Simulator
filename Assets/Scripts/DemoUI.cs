@@ -10,6 +10,7 @@ public class DemoUI : MonoBehaviour
     public UnityEngine.UI.Text weatherText;
     public UnityEngine.UI.Text temperatureText;
     public UnityEngine.UI.Dropdown weatherDropdown;
+    public GameManager gameManager;
     private bool started = false;
 
     void Start()
@@ -67,8 +68,8 @@ public class DemoUI : MonoBehaviour
 
     public void SetWeatherID(int id)
     {
-        Debug.Log("Weather ID " + id);
         EnviroSkyMgr.instance.ChangeWeather(id);
+        gameManager.Windshield(id);
     }
 
     public void SetVolumeClouds(bool b)

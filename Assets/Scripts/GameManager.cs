@@ -73,6 +73,7 @@ public class GameManager : MonoBehaviour
     public GameObject vidPanel;
     public GameObject settingPanel;
     [Header("InputField and Toggle")]
+    public GameObject windshield;
     public InputField inputName;
     public InputField inputExperience;
     public Toggle guideline;
@@ -195,7 +196,7 @@ public class GameManager : MonoBehaviour
         gameSettings.resWidth = Screen.currentResolution.width;
         gameSettings.fullscreenBool = Screen.fullScreen;
         gameSettings.msaaINI = QualitySettings.antiAliasing;
-        
+
         jsonString = JsonUtility.ToJson(gameSettings);
         Debug.Log(jsonString);
         File.WriteAllText(Application.persistentDataPath + "/" + "GameSettings.json", jsonString);
@@ -213,7 +214,7 @@ public class GameManager : MonoBehaviour
         resolutionLabel.text = Screen.currentResolution.width.ToString() + " x " + Screen.currentResolution.height.ToString();
         isFullscreen = Screen.fullScreen;
         msaaINI = QualitySettings.antiAliasing;
-
+        // Weather
         TitleTexts.SetActive(true);
         mainPanel.SetActive(false);
         vidPanel.SetActive(false);
@@ -450,14 +451,12 @@ public class GameManager : MonoBehaviour
         if (guideline.isOn == true)
         {
             gameSettings.guidelineBool = true;
-            Debug.Log("Show guideline");
-            //
+            mainCam.cullingMask = -1;
         }
         else
         {
             gameSettings.guidelineBool = false;
-            Debug.Log("Dont show it");
-            // 
+            mainCam.cullingMask = 311;
         }
     }
 
@@ -557,6 +556,19 @@ public class GameManager : MonoBehaviour
         {
             // eightMSAA()
             QualitySettings.antiAliasing = 8;
+        }
+    }
+
+    public void Windshield(int id)
+    {
+        Debug.Log("Weather ID " + id);
+        if (id == 0)
+        {
+            windshield.SetActive(true);
+        }
+        else
+        {
+            windshield.SetActive(false);
         }
     }
 }
