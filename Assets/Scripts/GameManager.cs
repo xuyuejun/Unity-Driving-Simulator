@@ -261,7 +261,7 @@ public class GameManager : MonoBehaviour
     void OnGameEnd()
     {
         string json = JsonUtility.ToJson(playerData);
-        WriteToFile(System.DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss"), json);
+        WriteToFile(playerData.name + " " + playerData.weather + " " + System.DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss"), json);
         GameInProgress = false;
     }
     void UpdateMainCanvas()
