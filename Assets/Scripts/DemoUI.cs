@@ -78,6 +78,7 @@ public class DemoUI : MonoBehaviour
 
     public void SetVolumeLighting(bool b)
     {
+        Debug.Log(b);
         EnviroSkyMgr.instance.useVolumeLighting = b;
     }
 
