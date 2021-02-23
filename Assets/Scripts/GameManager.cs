@@ -44,6 +44,7 @@ public class GameManager : MonoBehaviour
     {
         public string name;
         public int drivingExperience;
+        public string weather;
         public string date;
         public string displayType;
         public float waitTime;
@@ -335,7 +336,8 @@ public class GameManager : MonoBehaviour
         GUILayout.Label("index: " + index);
 
         GUILayout.Label("Name: " + playerData.name);
-        GUILayout.Label("Driving Experience" + playerData.drivingExperience);
+        GUILayout.Label("Driving Experience: " + playerData.drivingExperience);
+        GUILayout.Label("Name: " + playerData.weather);
     }
 
     // Pause Menu
@@ -564,10 +566,17 @@ public class GameManager : MonoBehaviour
         Debug.Log("Weather ID " + id);
         if (id == 0)
         {
+            playerData.weather = "Rain";
             windshield.SetActive(true);
+        }
+        else if (id == 1)
+        {
+            playerData.weather = "Clear Sky";
+            windshield.SetActive(false);
         }
         else
         {
+            playerData.weather = "Foggy";
             windshield.SetActive(false);
         }
     }

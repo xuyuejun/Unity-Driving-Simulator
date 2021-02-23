@@ -41,7 +41,6 @@ public class DemoUI : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         UpdateWeatherSlider();
     }
-
     public void ChangeTimeSlider()
     {
         if (sliderTime.value < 0f)
