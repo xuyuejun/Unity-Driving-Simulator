@@ -94,7 +94,6 @@ public class GameManager : MonoBehaviour
     public float timeScale = 1f;
     [Header("INI")]
     public int qualityLevel;
-    public float fovINI;
     private Resolution currentRes;
     public Boolean isFullscreen;
     public int msaaINI;
@@ -103,9 +102,6 @@ public class GameManager : MonoBehaviour
     private Resolution[] allRes;
     //Presets 
     private String[] presets;
-    //last shadow cascade value
-    public SaveSettings saveSettings = new SaveSettings();
-    // The start method; you will need to place all of your inital value getting/setting here. 
     [Header("Location Status")]
     public float Xcoordinate;
     public float Ycoordinate;
@@ -180,6 +176,7 @@ public class GameManager : MonoBehaviour
         QualitySettings.SetQualityLevel(read.curQualityLevel);
         mainCamShared.fieldOfView = read.fovINI;
         Screen.SetResolution(read.resWidth, read.resHeight, read.fullscreenBool);
+        fullscreenToggle.isOn = read.fullscreenBool;
         QualitySettings.antiAliasing = read.msaaINI;
     }
     public void SaveGameSettings()
@@ -211,7 +208,6 @@ public class GameManager : MonoBehaviour
         presets = QualitySettings.names;        //Get the presets from the quality settings 
         presetLabel.text = presets[QualitySettings.GetQualityLevel()].ToString();
         qualityLevel = QualitySettings.GetQualityLevel();
-        fovINI = mainCam.fieldOfView;
         allRes = Screen.resolutions;
         currentRes = Screen.currentResolution;
         resolutionLabel.text = Screen.currentResolution.width.ToString() + " x " + Screen.currentResolution.height.ToString();
@@ -425,9 +421,15 @@ public class GameManager : MonoBehaviour
         vidPanel.SetActive(false);
         settingPanel.SetActive(false);
 
-        fovINI = mainCam.fieldOfView;
-        isFullscreen = Screen.fullScreen;
-        saveSettings.SaveGameSettings();
+        SaveGameSettings();
+    }
+    public void resetSetting()
+    {
+        mainPanel.SetActive(true);
+        vidPanel.SetActive(false);
+        settingPanel.SetActive(false);
+
+        Debug.Log("Doing nothing");
     }
     // Input Field
     void inputNameChanged(string value)
@@ -520,9 +522,9 @@ public class GameManager : MonoBehaviour
     }
 
     // Set the game to windowed or full screen. This is meant to be used with a checkbox
-    public void setFullScreen(bool b)
+    public void setFullScreen()
     {
-        if (b == true)
+        if (fullscreenToggle.isOn == true)
         {
             Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, true);
         }
